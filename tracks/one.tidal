@@ -1,12 +1,9 @@
+-- Compat info - Tidal commit: 213c8f5a5f35a921c860d69ed968fa8f48cd333a
+
+
 let bpm = 126
 
 cps (bpm/60/4)
-
-d1
-$ sound "bd"
-# n "1"
-
-p "kick" $ sound "bd sn" # orbit 7
 
 {-
 
@@ -90,18 +87,18 @@ Pattern strings:
 
 hush
 
-interpolate 1 $ sound "jvbass(3,8)"
+interpolateIn 1 4 $ sound "jvbass(3,8)"
 
-p 1 $ sound "jvbass(5,8)"
+anticipateIn 1 4 $ sound "jvbass(5,8)"
 
 p 1 $ sound "bd sd bd cp"
 
-anticipate 1 $ sound "hc*8"
+xfadeIn 1 4 $ sound "hc*8"
 
 
 d1 $ sound (samples "hc*8" (iter 4 $ run 4))
 
-d1 $ sound "bd(5,8)"
+p 1 $ sound "bd(5,8)"
 
 (anticipate 3) $ sound (samples "bd(3,8)" (run 3))
 
@@ -115,29 +112,48 @@ d1 $ sound "{bd hh sn cp can}%4"
 
 d1 $ every 3 (0.25 <~) $ sound "bd*2 cp*2 hh sn"
 
-d2
-$ sound "hh(7,16,14)"
-# speed "1.2"
 
-d2 $ n (off 0.125 (+12) $ off 0.25 (+7) $ slow 2 $ "0(3,8) [5 7]") # sound "supergong" # gain 0.7
 
--- Let's start with a really nice Cassa
-d1
+-- OSC
+d1 $ sound "bd" # gain (cF 1 "bd-gain")
+
+hush
+
+p "k"
 $ sound "bd*4"
-+ crush "7"
-+ speed "0.7"
+# orbit 1
+# crush "7"
+# speed "0.7"
+# room 0.3
+# size 0.9
 
-d4
+p "h"
+$ whenmod 8 6 (const $ sound "~")
+$ sound "hh(7,16,14)"
+# orbit 2
+# speed "1.2"
+# gain "1.1"
+# room 0.4
+
+p "s"
+$ whenmod 8 4 (const $ slow 4 $ sound "~ ~ ~ [~ ~ cp cp]")
 $ sound "~ cp ~ cp"
-# gain "0.95"
+
+p "pad"
+$ sound "jazz:5*4"
+# orbit 3
+# speed "[1 1 0.8 0.9]/8"
+# delay 0.6
+# delayfb 0.75
+# delayt (1/3)
+# hpq 0.7
+# hpf 600
 
 d5
 $ sound "bass1:3 ~ ~ ~ ~"
 # sustain "0.4 0.2"
+# speed "1.1"
 
-d5 silence
-
-d1 $ up (run 12) # sound "arpy"
 
 d1 $ sound "bd(5,8) sn*2" # orbit 1 # delay 0.5
 
@@ -145,11 +161,10 @@ hush
 
 d1 $ sound "[bd sn sn*3]/2 [bd sn*3 bd*4]/3"
 
-d1 $ sound "bd sd:1"
+d1 $ sound "[bd bd, ~ cp]*2"
 
-d2 $ sound "hh hh hh hh"
+d2 $ sound "[~ hh]*4" # delay 0.3 # orbit 1
 
-d3 $ sound "jazz:5*4" + speed "[1 1 0.8 0.9]/8"
 
 
 d1 $ silence
@@ -170,11 +185,56 @@ d1 $ sound "voodoo:6 drum:2 drum:1 [~ voodoo:6]" |+|
      shape "0.05 0.2 0.4 0.6" |+|
      vowel "a e i o u ~"
 
-
-d1 $ n "c5 d5*2" # s "supersaw"
-
 hush
 
 d1 $ n "<[a5,cs5,e5,g5]*3 [d5,fs5,g5,c5]>" # s "supersquare" # gain "0.7"
 
 d2 $ every 4 (rev) $ n "<[g5 df5 e5 a5] [gf5 d5 c5 g5]*3>" # s "supersaw"
+
+
+"808bd:1"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+p "k"
+$ s "bd:1(7,16)"
+# orbit 1
+# gain (range 0 2 $ cF 0 "cc1")
+# room (range 0 2 $ cF 0 "cc3")
+# size (range 0 2 $ cF 0 "cc4")
+# lpf (rangex 0 20000 $ cF 40 "cc2")
+
+
+
+
+
+p "h"
+  $ whenmod 8 6 (const $ sound "~")
+$ sound "hh(7,16,14)"
+# orbit 2
+# speed "1.2"
+# gain "1.1"
+# room 0.4
+
+p "a"
+$ n "c4(5,16)"
+# s "supersaw"
+# legato 1.1
+
+
+hush
