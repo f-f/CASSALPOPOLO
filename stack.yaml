@@ -1,0 +1,7 @@
+resolver: lts-13.1
+packages:
+- .
+extra-deps:
+- git: https://github.com/tidalcycles/Tidal
+  commit: 213c8f5a5f35a921c860d69ed968fa8f48cd333a
+- tidal-vis-0.9.3

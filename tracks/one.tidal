@@ -1,0 +1,180 @@
+let bpm = 126
+
+cps (bpm/60/4)
+
+d1
+$ sound "bd"
+# n "1"
+
+p "kick" $ sound "bd sn" # orbit 7
+
+{-
+
+Combinators:
+
+rev pat
+every n f pat
+slow n pat
+fast n pat
+whenmod tot norm
+<~
+~>
+
+stack
+cat
+
+-}
+
+{-
+
+Effects:
+
+n s
+orbit n
+crush pat
+speed pat
+gain pat
+cutoff?
+resonance?
+cut "group"
+
+gain - changes volume, values from 0 to 1
+pan - pans sound right and left, values from 0 to 1
+shape - a type of amplifier, values from 0 to 1
+vowel - a vowel formant filter, values include a, e, i, o, and u
+speed - changes playback speed of a sample, see below
+
+-}
+
+{-
+
+Sounds:
+arpy
+bd
+sn
+hc
+cp
+supergong
+hh
+
+flick sid can metal future gabba sn mouth co gretsch mt arp h cp
+cr newnotes bass crow hc tabla bass0 hh bass1 bass2 oc bass3 ho
+odx diphone2 house off ht tink perc bd industrial pluck trump
+printshort jazz voodoo birds3 procshort blip drum jvbass psr
+wobble drumtraks koy rave bottle kurt latibro rm sax lighter lt
+arpy feel less stab ul
+
+Synths:
+    a series of tutorials: tutorial1, tutorial2, tutorial3, tutorial4, tutorial5
+    examples of modulating with the cursor or sound input: pmsin, in, inr
+    physical modeling synths: supermandolin, supergong, superpiano, superhex
+    a basic synth drumkit: superkick, superhat, supersnare, superclap, super808
+    four analogue-style synths: supersquare, supersaw, superpwm, supercomparator
+    two digital-style synths: superchip, supernoise
+
+
+Patterns:
+sine
+saw
+tri
+square
+
+Pattern strings:
+[] seq
+{,} polymetric
+[,] polyrhythm
+? maybe play
+~ rest
+
+-}
+
+hush
+
+interpolate 1 $ sound "jvbass(3,8)"
+
+p 1 $ sound "jvbass(5,8)"
+
+p 1 $ sound "bd sd bd cp"
+
+anticipate 1 $ sound "hc*8"
+
+
+d1 $ sound (samples "hc*8" (iter 4 $ run 4))
+
+d1 $ sound "bd(5,8)"
+
+(anticipate 3) $ sound (samples "bd(3,8)" (run 3))
+
+d1 $ s "arpy*8" # n (irand 30)
+
+hush
+
+d1 $ whenmod 8 6 (const $ sound "arpy(3,8) bd*4") $ sound "bd sn bass2 sn"
+
+d1 $ sound "{bd hh sn cp can}%4"
+
+d1 $ every 3 (0.25 <~) $ sound "bd*2 cp*2 hh sn"
+
+d2
+$ sound "hh(7,16,14)"
+# speed "1.2"
+
+d2 $ n (off 0.125 (+12) $ off 0.25 (+7) $ slow 2 $ "0(3,8) [5 7]") # sound "supergong" # gain 0.7
+
+-- Let's start with a really nice Cassa
+d1
+$ sound "bd*4"
++ crush "7"
++ speed "0.7"
+
+d4
+$ sound "~ cp ~ cp"
+# gain "0.95"
+
+d5
+$ sound "bass1:3 ~ ~ ~ ~"
+# sustain "0.4 0.2"
+
+d5 silence
+
+d1 $ up (run 12) # sound "arpy"
+
+d1 $ sound "bd(5,8) sn*2" # orbit 1 # delay 0.5
+
+hush
+
+d1 $ sound "[bd sn sn*3]/2 [bd sn*3 bd*4]/3"
+
+d1 $ sound "bd sd:1"
+
+d2 $ sound "hh hh hh hh"
+
+d3 $ sound "jazz:5*4" + speed "[1 1 0.8 0.9]/8"
+
+
+d1 $ silence
+
+hush
+
+d1 silence
+
+d2 $ slow 2 $ s "casio [casio*2] ~ ~" # speed "<0.4 0.6>"
+
+d3 $ sound ((cat ["can*8", "[cp*4 sn*4, jvbass*16]"] ))
+
+d4 $ slow 2 $ s "bd bd bd bd bd bd [bd*4] [bd*4]"
+
+d1 $ sound "voodoo:6 drum:2 drum:1 [~ voodoo:6]" |+|
+     speed "0.3 0.2 0.4 0.3" |+|
+     vowel "o" |+|
+     shape "0.05 0.2 0.4 0.6" |+|
+     vowel "a e i o u ~"
+
+
+d1 $ n "c5 d5*2" # s "supersaw"
+
+hush
+
+d1 $ n "<[a5,cs5,e5,g5]*3 [d5,fs5,g5,c5]>" # s "supersquare" # gain "0.7"
+
+d2 $ every 4 (rev) $ n "<[g5 df5 e5 a5] [gf5 d5 c5 g5]*3>" # s "supersaw"

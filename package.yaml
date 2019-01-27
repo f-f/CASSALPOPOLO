@@ -1,0 +1,26 @@
+name:                cassa-al-popolo
+version:             0.1.0.0
+github:              "f-f/cassa-al-popolo"
+homepage:            https://github.com/f-f/cassa-al-popolo
+license:             BSD3
+author:              "Fabrizio Ferrai"
+maintainer:          "fabrizio@ferrai.io"
+copyright:           "2019 Fabrizio Ferrai"
+
+extra-source-files:
+- README.md
+
+dependencies:
+  - base >= 4.7 && < 5
+  - tidal
+
+executables:
+  cassa-al-popolo:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - tidal
