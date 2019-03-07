@@ -281,32 +281,6 @@ hush
 
 d1 $ s "jazz:5*4"
 
-do
-  let drone =
-        superimpose (rev)
-        $ slow 32
-        $ (striateBy 4000 (1/100) $ s "jazz:5")
-        # speed (slow 16 $ tri)
-        # delay 0.6
-        # delaytime 0.333
-        # delayfeedback 0.7
-        -- # pan (range 0.33 0.66 $ slow 4 $ sine)
-        # room 0.3
-        # size 0.7
-        # orbit 3
-  xfadeIn "drone" 16
-  -- p "drone"
-  $ stack
-  [
-    drone # (drone # pan 0),
-    16 <~ (drone # pan 1)
-  ] # gain 0.7
-
-
-p "bass"
-$ s "bass1:2"
-# gain 0.9
-
 
 d1
 $ superimpose ((# orbit 1) . (+ pan 1) . (+ room 1) . (+ size 0.9))

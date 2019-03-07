@@ -1,0 +1,48 @@
+-- Compat info - Tidal commit: 213c8f5a5f35a921c860d69ed968fa8f48cd333a
+
+let setbpm bpm = setcps (bpm/60/4)
+
+setbpm 126
+
+
+do
+  let drone =
+        superimpose (rev)
+        $ slow 32
+        $ (striateBy 4000 (1/100) $ s "jazz:5")
+        # speed (slow 16 $ tri)
+        # delay 0.6
+        # delaytime 0.333
+        # delayfeedback 0.7
+        -- # pan (range 0.33 0.66 $ slow 4 $ sine)
+        # room 0.3
+        # size 0.7
+        # orbit 3
+  xfadeIn "drone" 16
+  $ stack
+  [
+    drone # (drone # pan 0),
+    16 <~ (drone # pan 1)
+  ] # gain 0.7
+
+
+p "bass"
+$ euclid 5 8
+$ n "c3"
+  # s "superhammond"
+  # voice 6
+
+
+p "k"
+$ s "bd*4"
+  # lpf 1046 -- c6 freq
+  # lpq 0.3
+
+
+p "h"
+$ whenmod 8 6 (const $ sound "~")
+$ sound "hh(7,16,14)"
+  # orbit 2
+  # speed "1.2"
+  # gain "1.1"
+  # room 0.4
