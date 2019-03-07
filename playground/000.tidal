@@ -1,9 +1,9 @@
 -- Compat info - Tidal commit: 213c8f5a5f35a921c860d69ed968fa8f48cd333a
 
 
-let bpm = 126
+let setbpm bpm = setcps (bpm/60/4)
 
-cps (bpm/60/4)
+setbpm 126
 
 {-
 
@@ -235,6 +235,138 @@ p "a"
 $ n "c4(5,16)"
 # s "supersaw"
 # legato 1.1
+
+
+hush
+
+p "k"
+$ sound "bd(2,7)"
+
+p "h"
+$ sound "hh*4"
+# tremr 30
+
+
+d1
+$ n (arp "<up down diverge>" "<a'm9'8 e'7sus4'8>")
+# sound "superpiano"
+
+
+let shiftBy n = (n <~)
+    shift = shiftBy 1
+    rand' n = shiftBy n $ rand
+
+
+d1 $ weave 16 (pan sine)
+  [sound "bd sn cp",
+   sound "casio casio:1",
+   sound "[jvbass*2 jvbass:2]/2",
+   sound "hc*4"
+  ]
+
+
+d1 $ weave 8 (gain sine) [sound "bd sn", sound "cp(3,8)"]
+
+hush
+
+
+
+d1
+$ stack
+[ s "bd sn" # orbit 1 # pan 1 # room 1 # size 0.9
+, s "bd sn" # orbit 0 # pan 0
+]
+
+hush
+
+d1 $ s "jazz:5*4"
+
+do
+  let drone =
+        superimpose (rev)
+        $ slow 32
+        $ (striateBy 4000 (1/100) $ s "jazz:5")
+        # speed (slow 16 $ tri)
+        # delay 0.6
+        # delaytime 0.333
+        # delayfeedback 0.7
+        -- # pan (range 0.33 0.66 $ slow 4 $ sine)
+        # room 0.3
+        # size 0.7
+        # orbit 3
+  xfadeIn "drone" 16
+  -- p "drone"
+  $ stack
+  [
+    drone # (drone # pan 0),
+    16 <~ (drone # pan 1)
+  ] # gain 0.7
+
+
+p "bass"
+$ s "bass1:2"
+# gain 0.9
+
+
+d1
+$ superimpose ((# orbit 1) . (+ pan 1) . (+ room 1) . (+ size 0.9))
+$ s "bd sn"
+# orbit 0
+# pan 0
+
+--     physical modeling synths: supermandolin, supergong, superpiano, superhex
+--    a basic synth drumkit: superkick, superhat, supersnare, superclap, super808
+--    four analogue-style synths: supersquare, supersaw, superpwm, supercomparator
+--   two digital-style synths: superchip, supernoise
+
+p "bass"
+$ n "c3 d3*2"
+# s "superhammond"
+# voice 6
+
+p "moog"
+$ n "c3 d3*2"
+# s "superpwm"
+# voice 0.6
+# lfo 0.9
+# pitch1 2.4
+
+p "resonant"
+$ n "c3 d3*2"
+# s "supersaw"
+# voice 0.5
+# resonance 0.9
+# lfo 0.1
+# pitch1 0.5
+
+p "bass"
+$ n "c3 d3*2"
+# s "superkick"
+
+
+
+hush
+
+d1 $ n (toScale [0,2,4,5,7,9,11] $ ("[1 ~ 1 5 ~ 5 6 ~ 6 4 ~ 4]/2"-1 + "[0,2,4]")) # s "superhammond"
+
+
+
+
+
+
+
+
+
+
+
+
+
+reverbPan :: Pattern Double -> ControlPattern
+reverbPan = pF "reverbPan"
+
+p "k" $ s "bd*4"
+# room 0.7
+# reverbPan 0.5
 
 
 hush
