@@ -23,7 +23,7 @@
     ~dirt.start(57120, [0, 0, 0, 0, 0, 0, 0, 0, 2, 2]);
   };
 
-s.latency = 0.5; // increase this if you get "late" messages
+s.latency = 1.5; // increase this if you get "late" messages
 );
 
 // ~dirt.stop();
