@@ -2,11 +2,16 @@
 
 import mido
 
+from time import time
 from pythonosc import udp_client
 from pythonosc import osc_message_builder
 
 client = udp_client.SimpleUDPClient("127.0.0.1", 6010)
 
+# We want to avoid jamming the OSC channel with events, so we rate-limit them
+# This map has the control as key and the timestamp of the last event as value,
+# so we can decide if we should send an event or discard it if it's too often
+last_times = {}
 
 with mido.open_input('LPD8') as inport:
     for msg in inport:
@@ -34,5 +39,9 @@ with mido.open_input('LPD8') as inport:
             print(msg)
             continue
 
-        print([prefix + key, value])
-        client.send_message("/ctrl", [prefix + key, value])
+        k = prefix + key
+        now = time()
+        if k not in last_times or now - last_times[k] > 0.03:
+            print([k, value])
+            client.send_message("/ctrl", [k, value])
+            last_times[k] = now
