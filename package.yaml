@@ -7,12 +7,22 @@ author:              "Fabrizio Ferrai"
 maintainer:          "fabrizio@ferrai.io"
 copyright:           "2019 Fabrizio Ferrai"
 
+default-extensions:
+- OverloadedStrings
+- ScopedTypeVariables
+
+ghc-options:
+  - -Wall
+
 extra-source-files:
 - README.md
 
 dependencies:
   - base >= 4.7 && < 5
   - tidal
+  - containers
+  - random
+  - MonadRandom
 
 executables:
   cassa-al-popolo:

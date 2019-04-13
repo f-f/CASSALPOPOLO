@@ -1,6 +1,9 @@
 module Main where
 
-import Sound.Tidal.Context
+import Prelude hiding (min)
+import Markov
 
 main :: IO ()
-main = pure ()
+main = do
+  _ <- parseMatrix
+  pure ()
