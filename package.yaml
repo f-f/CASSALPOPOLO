@@ -10,9 +10,7 @@ copyright:           "2019 Fabrizio Ferrai"
 default-extensions:
 - OverloadedStrings
 - ScopedTypeVariables
-
-ghc-options:
-  - -Wall
+- LambdaCase
 
 extra-source-files:
 - README.md
@@ -23,6 +21,8 @@ dependencies:
   - containers
   - random
   - MonadRandom
+  - file-embed
+  - bytestring
 
 executables:
   cassa-al-popolo:

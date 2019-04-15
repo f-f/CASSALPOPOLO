@@ -1,22 +1,33 @@
+{-# LANGUAGE LambdaCase          #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TemplateHaskell     #-}
+{-# OPTIONS_GHC -Wall #-}
+{-# OPTIONS_GHC -fno-warn-unused-binds #-}
+
 {- |
 
 https://www.microsoft.com/en-us/research/project/data-driven-exploration-musical-chord-sequences/
 
 -}
-module Markov where
+module Markov
+  ( render
+  , renderChord
+  , runMarkov
+  , getHarmony
+  , transitions
+  ) where
 
-import qualified Data.List
-import qualified Data.Map.Strict  as Data.Map
 import qualified Control.Monad.Random as Random
-import qualified System.Random as Random
+import qualified Data.List
+import qualified Data.Map.Strict      as Data.Map
 
-import           Data.Bifunctor   (second)
-import           Data.Map.Strict  (Map)
-import           Data.Maybe
-import           Data.Traversable (for)
-import           Prelude          hiding (min, second)
-import           Text.Read        (readMaybe)
-import Control.Monad
+import           Data.Bifunctor       (second)
+import           Data.Char            (toLower)
+import           Data.FileEmbed       (embedStringFile, makeRelativeToProject)
+import           Data.List            (intercalate)
+import           Data.Map.Strict      (Map)
+import           Data.Maybe           (Maybe (..), catMaybes)
+import           Prelude              hiding (min)
 
 data Note
   = C
@@ -35,7 +46,11 @@ data Note
   deriving (Ord, Eq, Show)
 
 data Chord
-  = Triad Note Note Note
+  = TriadMaj Note
+  | TriadMin Note
+  | TriadDim Note
+  | TriadAug Note
+  | TriadSus Note
   | Start
   | End
   deriving (Ord, Eq, Show)
@@ -49,11 +64,11 @@ dim = (0, 3, 6)
 aug = (0, 4, 8)
 sus = (0, 5, 7)
 
+notes :: [Note]
 notes = [C, Cs, D, Ds, E, F, G, Gs, A, As, B]
-variants = [maj, min, dim, aug, sus]
 
-mkTriad :: Note -> (Int, Int, Int) -> Chord
-mkTriad root (r,t,f) = Triad (transpose root r) (transpose root t) (transpose root f)
+variants :: [Note -> Chord]
+variants = [TriadMaj, TriadMin, TriadDim, TriadAug, TriadSus]
 
 transpose :: Note -> Int -> Note
 transpose C  1      = Cs
@@ -72,15 +87,22 @@ transpose Rest _    = Rest
 transpose note 0    = note
 transpose note more = transpose (transpose note (subtract 1 (mod more 12))) 1
 
+-- | PCA is for "principal component analysis"
+pcaTransmodelMean :: String
+pcaTransmodelMean = $(makeRelativeToProject "pca_transmodel_mean.txt" >>= embedStringFile)
+
+transitions :: Transitions
+transitions = processInput $ tail $ lines pcaTransmodelMean
+
 processInput :: [String] -> Transitions
-processInput lines = foldr (Data.Map.unionWith Data.Map.union)
+processInput ls = foldr (Data.Map.unionWith Data.Map.union)
                        (Data.Map.singleton Start starts)
                        [mids, ends]
   where
     combs :: [Chord]
-    combs = [mkTriad note triadType | note <- notes, triadType <- variants]
+    combs = [mkTriad note | note <- notes, mkTriad <- variants]
 
-    (startWs, midAndEnds) = Data.List.span (/= "60 60") (tail lines)
+    (startWs, midAndEnds) = Data.List.span (/= "60 60") (tail ls)
     (midWs, endWs) = Data.List.span (/= "60") (tail midAndEnds)
 
     starts :: Map Chord Double
@@ -102,14 +124,8 @@ processInput lines = foldr (Data.Map.unionWith Data.Map.union)
       (\(triad, weight) -> Data.Map.singleton triad (Data.Map.singleton End (read weight)))
       (zip combs (tail endWs))
 
-getTransitions :: IO Transitions
-getTransitions = do
-  content <- readFile "pca_transmodel_mean.txt"
-  let ls = lines content
-  pure $ processInput (tail ls)
-
-runMarkov :: Chord -> Transitions -> IO [Chord]
-runMarkov chord ts = fmap (reverse . tail) $ go chord []
+runMarkov :: Chord -> IO [Chord]
+runMarkov chord = fmap (reverse . tail) $ go chord []
   where
     go End acc = pure acc
     go c acc = do
@@ -117,9 +133,9 @@ runMarkov chord ts = fmap (reverse . tail) $ go chord []
       go next (next : acc)
 
     nextChord :: Chord -> IO Chord
-    nextChord c = case Data.Map.lookup c ts of
+    nextChord c = case Data.Map.lookup c transitions of
       Just from -> pickChord $ Data.Map.toList from
-      Nothing -> pure End
+      Nothing   -> pure End
 
     pickChord :: [(Chord, Double)] -> IO Chord
     pickChord probs = do
@@ -130,16 +146,26 @@ runMarkov chord ts = fmap (reverse . tail) $ go chord []
     weightedList gen weights = Random.evalRand m gen
       where m = sequence . repeat . Random.fromList $ weights
 
-getHarmony :: Transitions -> Int -> IO [Chord]
-getHarmony transitions n = go []
+getHarmony :: Int -> IO [Chord]
+getHarmony n = go []
   where
     go lastSeq = do
       case (length lastSeq) == n of
-        True -> pure lastSeq
-        False -> runMarkov Start transitions >>= go
+        True  -> pure lastSeq
+        False -> runMarkov Start >>= go
 
-parseMatrix :: IO ()
-parseMatrix = do
-  transitions <- getTransitions
-  chords <- getHarmony transitions 3
-  putStrLn $ show chords
+renderChord :: Chord -> Maybe String
+renderChord = \case
+  TriadMaj n -> Just $ renderNote n <> "'maj"
+  TriadMin n -> Just $ renderNote n <> "'min"
+  TriadAug n -> Just $ renderNote n <> "'aug"
+  TriadDim n -> Just $ renderNote n <> "'dim"
+  TriadSus n -> Just $ renderNote n <> "'sus4"
+  _ -> Nothing
+  where
+    renderNote = \case
+      Rest -> error "Cannot render a chord with Rest"
+      n -> fmap toLower $ show n
+
+render :: [Chord] -> String
+render cs = intercalate " " (catMaybes $ map renderChord cs)
