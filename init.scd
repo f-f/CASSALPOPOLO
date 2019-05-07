@@ -27,3 +27,10 @@ s.latency = 1.5; // increase this if you get "late" messages
 );
 
 // ~dirt.stop();
+
+MIDIClient.init;
+
+~midiOut = MIDIOut.newByName("Scarlett 2i4 USB", "Scarlett 2i4 USB");
+~dirt.soundLibrary.addMIDI(\volca, ~midiOut);
+
+~midiOut.latency = 0;
