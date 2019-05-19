@@ -41,12 +41,9 @@ def select_control(new_mode):
             port.send(mido.Message('control_change', control=i, value=0))
 
 def note_from_coords(x, y):
-    # return ((y + 1) * 10) + x + 1
     return ((x + 1) * 10) - y + 8
 
 def note_to_coords(note):
-    # x = (note % 10) - 1
-    # y = (note // 10) - 1
     x = (note // 10) - 1
     y = abs((note % 10) - 8)
     return (x, y)
@@ -94,7 +91,7 @@ def set_channel_val(channel, new_val):
         osc_k = "vol" + str(channel + 8)
     # TODO: define what other modes do
     else:
-        osc_k = "cc" + str(channel)
+        osc_k = "cc" + str(mode) + "_" + str(channel)
     osc_value = new_val / 7
     print([osc_k, osc_value])
     client.send_message("/ctrl", [osc_k, osc_value])
