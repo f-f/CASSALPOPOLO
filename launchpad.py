@@ -89,6 +89,14 @@ def set_channel_val(channel, new_val):
         osc_k = "vol" + str(channel)
     elif mode == 6:
         osc_k = "vol" + str(channel + 8)
+    elif mode == 5:
+        osc_k = "lpf" + str(channel)
+    elif mode == 4:
+        osc_k = "hpf" + str(channel)
+    elif mode == 3:
+        osc_k = "revRoom" + str(channel)
+    elif mode == 2:
+        osc_k = "revSize" + str(channel)
     # TODO: define what other modes do
     else:
         osc_k = "cc" + str(mode) + "_" + str(channel)
