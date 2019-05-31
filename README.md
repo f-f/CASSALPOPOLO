@@ -1,4 +1,6 @@
-# cassa-al-popolo
+![CASSALPOPOLO Logo](https://github.com/f-f/CASSALPOPOLO/raw/master/logo/CASSALPOPOLO.png)
+
+# CASSALPOPOLO
 
 > More 4/4 for the peoples
 
