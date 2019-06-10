@@ -14,7 +14,7 @@
     // Every orbit should have 2 channels
     ~dirt = SuperDirt(2, s);
     // Load samples (path containing a wildcard can be passed in)
-    // for example: ~dirt.loadSoundFiles("/Users/myUserName/Dirt/samples/*");
+    ~dirt.loadSoundFiles("/Users/fabrizio/code/cassa-al-popolo/samples/*");
     // s.sync; // optionally: wait for samples to be read
     ~dirt.loadSoundFiles;
     // start listening on port 57120
@@ -23,14 +23,12 @@
     ~dirt.start(57120, [0, 0, 0, 0, 0, 0, 0, 0, 2, 2]);
   };
 
-s.latency = 1.5; // increase this if you get "late" messages
+s.latency = 0.5; // increase this if you get "late" messages
 );
 
 // ~dirt.stop();
 
 MIDIClient.init;
-
 ~midiOut = MIDIOut.newByName("Scarlett 2i4 USB", "Scarlett 2i4 USB");
 ~dirt.soundLibrary.addMIDI(\volca, ~midiOut);
-
 ~midiOut.latency = 0;
