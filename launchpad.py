@@ -97,7 +97,10 @@ def set_channel_val(channel, new_val):
         osc_k = "revRoom" + str(channel)
     elif mode == 2:
         osc_k = "revSize" + str(channel)
-    # TODO: define what other modes do
+    elif mode == 1:
+        osc_k = "dlyFb" + str(channel)
+    elif mode == 0:
+        osc_k = "dly" + str(channel)
     else:
         osc_k = "cc" + str(mode) + "_" + str(channel)
     osc_value = new_val / 7
