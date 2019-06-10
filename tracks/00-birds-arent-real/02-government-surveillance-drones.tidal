@@ -2,57 +2,67 @@
 
 :script ../../Prelude.hs
 
-syncvolca
+syncvolca 1
 
 setbpm 126
 
-sendvolca "c3*16"
+syncvolca 0.6666
 
-sendvolca "e3*16"
+sendvolca $ slow 4 -- $ n "c3*4"
+  $ stack
+  [  n "[c4,c5] [g3,g4] [as3,as4] [f3,f4]"
+    -- n "c3 c3 ef3 bf2"
+  --, n "c4'min c4'min ef4'maj bf3'maj"
+  -- , n "f3 f3 af3 ef2"
+  ]
 
-sendvolca "g3*16"
+sendvolca $ n "c3*4"
+
+-- sendvolca "e3*16"
+
+-- sendvolca "g3*16"
 
 stopvolca
 
 hush_
 
 
-xfadeIn "moog" 16
-  $ superimpose (rev)
-  $ slow 4 $ n "c2"
-  # s "superpwm"
-  # voice 0.6
-  # lfo 0.9
-  # lpf (rangex 2000 3000 sine)
-  # gain q8
-  # orbit 8
-  # delay 0.4
-  # room 0.4
-  # reverbPan (slow 4 $ sine)
+p 1 $ lp 0 $ jux rev $ chunk 4 (fast 2 . (|- n 12)) $ off 0.25 (|+ 7) $ struct (iter 4 "t(5,8)")
+  $ n (scale "iwato" "0 .. 7") # sound "superpiano"
 
 
-p_ "k" 1
+p "k" $ lp 0 $ slow 12 $ n (run 12) # sound "sitar" # pan (sine)
+
+
+p "k" $ lp 0
+  -- $ fill1 "house:8(11,16)"
   -- $ slow 8
   -- $ euclid 3 5
   $ s "house:8*4"
-  # room 0.2
-  # size 0.4
 
 
-p_ "hh" 2
-  -- $ s "[~ gretsch:19]*4"
+
+p "hh" $ lp 1
+  $ fill1 (silence)
   $ s "[~ gretsch:4]*4"
+  -- $ s "[~ gretsch:19]*4"
+  -- $ s "[gretsch:19 gretsch:4 gretsch:4]*4"
+  -- $ s "[gretsch:19 gretsch:4 gretsch:4 gretsch:4]*4"
   # cut "1"
-  # hpf 2500
+  -- # hpf 2500
 
 p "clap" $ silence
 
-p_ "clap" 3
+p "clap" $ lp 2
+  $ fill1 "[house:4, house:7](7,16)"
   $ s "[~ house:4]*2"
   -- $ s "[house:4, house:7]*4"
 
 
-p_ "acid" 5
+
+
+
+p "acid" $ lp 4
   $ n "[c3 ~]*2 ~ ds3"
   # s "supersaw"
   # voice 0.6
@@ -60,7 +70,7 @@ p_ "acid" 5
   # room 0.2
   # legato 1.05
 
-p_ "sax" 6
+p "sax" $ lp 6
   $ weave 16 (pan $ slow 3 sine)
   [sound "[~ sax:1(3,5)]",
    sound "[sax:2 ~ sax:4 sax:5]",
@@ -68,14 +78,14 @@ p_ "sax" 6
    sound "sax:7(3,8)"
   ]
   -- # cut "1" -- revolutionary.
-  # room 0.4
   # reverbPan sine
 
-p_ "chords" 7
-  -- $ euclid 5 8
+p "chords" $ lp 7
   $ euclid 1 8
-  $ slow 2
-  $ n "[c2, c3]"
+  -- $ euclid 5 16
+  $ slow 4
+  -- $ n "[c2, c3]"
+  $ n "[c4,c5] [g3,g4] [as3,as4] [f3,f4]"
   -- $ n "<[c5, e5]*3 [f5, g5]>"
   # s "superhammond"
   # voice 6
@@ -99,3 +109,23 @@ p "piano"
   # lpf 4000
 
 hush
+
+
+
+
+
+
+
+
+xfadeIn "moog" 16
+  $ superimpose (rev)
+  $ slow 4 $ n "c2"
+  # s "superpwm"
+  # voice 0.6
+  # lfo 0.9
+  # lpf (rangex 2000 3000 sine)
+  # gain (q 8)
+  # orbit 8
+  # delay 0.4
+  # room 0.4
+  # reverbPan (slow 4 $ sine)
