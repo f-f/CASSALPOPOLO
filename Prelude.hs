@@ -11,11 +11,17 @@ setbpm bpm = setcps (bpm/60/4)
 --   Assign them like `gain q1`, etc
 maxgain = 1.3
 maxrev = 1.0
+minhpf = 300
 maxlpf = 9000
+maxfb = 0.8
 ccVol idx = range 0 maxgain $ cF 0 ("vol" ++ show idx)
 
 let ccLpf idx = selectF (segment 256 $ cF 0 ("toggle5_" ++ show idx))
                   [const $ rangex 20 maxlpf (cF maxlpf ("lpf" ++ show idx)), const 20000]
+                  silence
+
+    let ccHpf idx = selectF (segment 256 $ cF 0 ("toggle4_" ++ show idx))
+                  [const $ rangex minhpf 20000 (cF 0 ("hpf" ++ show idx)), const 20]
                   silence
 
 let ccRevRoom idx = selectF (segment 256 $ cF 0 ("toggle3_" ++ show idx))
@@ -24,6 +30,14 @@ let ccRevRoom idx = selectF (segment 256 $ cF 0 ("toggle3_" ++ show idx))
 
 let ccRevSize idx = selectF (segment 256 $ cF 0 ("toggle2_" ++ show idx))
                     [const $ range 0 maxrev (cF 0 ("revSize" ++ show idx)), const 0]
+                    silence
+
+let ccDlyFb idx = selectF (segment 256 $ cF 0 ("toggle1_" ++ show idx))
+                    [const $ range 0 maxfb (cF 0 ("dlyFb" ++ show idx)), const 0]
+                    silence
+
+let ccDly idx = selectF (segment 256 $ cF 0 ("toggle0_" ++ show idx))
+                    [const $ range 0 maxfb (cF 0 ("dly" ++ show idx)), const 0]
                     silence
 
 
@@ -73,8 +87,11 @@ let lp idx pat
       = mutable idx (pat
                      # gain (ccVol idx)
                      # lpf (ccLpf idx)
+                     # hpf (ccHpf idx)
                      # room (ccRevRoom idx)
                      # size (ccRevSize idx)
+                     # delay (ccDly idx)
+                     # delayfb (ccDlyFb idx)
                      # orbit (fromInteger idx))
 
 
