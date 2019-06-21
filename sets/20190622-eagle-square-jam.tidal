@@ -1,0 +1,143 @@
+-- Compat info - Tidal commit: d15bd409097afc342570aeb1d5df872f0ed8b3c0
+
+:script ../Prelude.hs
+
+syncmidi 1
+
+setbpm 91
+
+
+sendmidi
+  $ slow 1
+  $ n "<e4(5,8,2) g3(5,8,1) d4(5,8,2) b3(5,8,1)>"
+
+once
+  $ slow 128
+  $ s "amelie"
+  -- # unit "c" # gain 0.7
+  # delaytime 0.250
+  # cut "7"
+  # hpf 400
+  # room 0.85
+  # size 0.85
+  # delay 0.85
+  # delayfb 0.85
+  # orbit 7
+
+p "k"
+  $ lp 0
+  $ euclid 4 8
+  $ s "house:8"
+
+p "hh"
+  $ lp 2
+  $ s "[[~ gretsch:3] gretsch:4]*4"
+  # cut 2
+
+p "clap"
+  $ lp 1
+  $ fill1 "[house:4, house:7](5,16)"
+  $ s "[~ house:4]*2"
+
+
+hush_
+
+
+-- Stacchetto 1
+
+syncmidi 1
+
+setbpm 135
+
+sendmidi
+  $ n "<a4 f4 d4 d4> ~"
+
+p "hh"
+  $ lp 2
+  $ s "[~ gretsch:19 gretsch:19 gretsch:19]*4"
+  # cut "2"
+
+p "clap"
+  $ lp 1
+  $ s "house:4(5,8,1)"
+
+p "ping"
+  $ lp 6
+  $ s "superhammond(11,16,2)"
+  # n (fmap (+ 9) (scale "aeolian" (irand 8)))
+
+p "k"
+  $ lp 0
+  $ euclid 3 8
+  $ s "house:8"
+
+hush_
+
+
+-- Stacchetto 2
+
+syncmidi 1.5
+
+setbpm 120
+
+p "glass"
+  $ lp 5
+  $ euclid "<5 9 13 7>" 16
+  $ s "bottle"
+
+sendmidi
+  -- $ slow 1.333
+  $ n "<[a5'min7, a4, d5] [a5'min7, a4, d5] [a5'min7, c5, f5] [a5'min7, d5, g5]>"
+
+p "k"
+  $ lp 0
+  $ euclid 4 8
+  $ s "house:8"
+
+p "bass"
+  $ lp 4
+  -- $ n "[a3 ~]*4"
+  $ fill4 (n "<a3*4 a3*4 c4*4 d4*4>" # s "superhammond" # voice 6)
+  $ n "<c4*4 c4*4 es3*4 g3*4>"
+  # s "superhammond"
+  # voice 6
+
+hush_
+
+
+-- Fin
+
+
+setbpm 90
+
+p "chord"
+  $ lp 7
+  $ n "[~ [a4'min,a5'min]]*2"
+  # s "supermandolin"
+  # delaytime 0.333
+
+p "k"
+  $ lp 0
+  $ s "house:8"
+
+-- Minilogue 071
+sendmidi
+  $ n "<a5 [[~ c6 c6 ~] c6] f5 [[~ g5 g5 ~] g5] d5 [[~ e5 e5 ~] e5] f5 [~ a4 ~ a4]>"
+
+p "hh"
+  $ lp 1
+  $ s "[~ gretsch:4]*2"
+
+p "s"
+  $ lp 2
+  $ s "~ gretsch:23"
+  # delaytime 0.333
+
+p "moog"
+  $ lp 6
+  $ fast 4
+  $ n (arp "up" "<a5'sus4 a5'min7 a5'm7s9 a5'min7>")
+  # s "superpwm"
+  # voice 0.6
+  # lfo 0.9
+  # pitch1 2.4
