@@ -130,8 +130,24 @@ def toggle_channel_mute(channel):
     client.send_message("/ctrl", [osc_k, osc_value])
 
 
+def setup():
+    global mode
+    for view in range(8):
+        if view == 7 or view == 6:
+            val = 4
+        elif view == 5:
+            val = 7
+        else:
+            val = 0
+        mode = view
+        for ch in range(8):
+            set_channel_val(ch, val)
+            toggle_channel_mute(ch)
+    mode = 7
+
 
 with mido.open_input('Launchpad MK2') as inport:
+    setup()
     select_control(mode)
 
     for msg in inport:
