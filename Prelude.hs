@@ -20,7 +20,7 @@ let ccLpf idx = selectF (segment 256 $ cF 0 ("toggle5_" ++ show idx))
                   [const $ rangex 20 maxlpf (cF maxlpf ("lpf" ++ show idx)), const 20000]
                   silence
 
-    let ccHpf idx = selectF (segment 256 $ cF 0 ("toggle4_" ++ show idx))
+let ccHpf idx = selectF (segment 256 $ cF 0 ("toggle4_" ++ show idx))
                   [const $ rangex minhpf 20000 (cF 0 ("hpf" ++ show idx)), const 20]
                   silence
 
@@ -67,7 +67,7 @@ let killSample sampleChannel cutGroup = do
 -- killSample "test" 10
 
 -- | Sync the tempo on the Volca with Tidal
-let syncvolca factor = do
+let syncmidi factor = do
       p "midiclock" $ midicmd (parseBP_E $ "midiClock*" ++ show (96 * factor)) # s "volca"
       threadDelay 100000
       once $ midicmd "stop" # s "volca"
@@ -75,12 +75,12 @@ let syncvolca factor = do
       threadDelay 1000000
       p "midictl" $ silence
 
-let sendvolca pat = p "volcanotes" $ pat # s "volca" # midichan 0
+let sendmidi pat = p "volcanotes" $ pat # s "volca" # midichan 0
 
-let stopvolca = p "volcanotes" $ silence
+let stopmidi = p "volcanotes" $ silence
 
 -- | Fix the `hush` function so we resync the midi
-let hush_ = hush >> (syncvolca 1)
+let hush_ = hush >> (syncmidi 1)
 
 -- | A better `p` that we can map to MIDI controls for volume and muting
 let lp idx pat
