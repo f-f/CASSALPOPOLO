@@ -1,0 +1,92 @@
+-- Compat info - Tidal commit: d15bd409097afc342570aeb1d5df872f0ed8b3c0
+
+:script ../Prelude.hs
+
+setbpm 124
+
+
+hush_
+
+p "k" (lp 0 (s "house:8*4"))
+
+p "hh"
+  $ lp 1
+  $ s "[~ gretsch:19 ~ gretsch:19]*4"
+  # cut 2
+
+
+
+p "hh"
+  $ lp 1
+  $ s "[~ gretsch:4]*4"
+
+p "clap" $ silence
+
+hush_
+
+p "ping"
+  $ lp 6
+  $ s "superhammond(11,16,2)"
+  # n (scale "<major minor>" (irand 8))
+
+
+p "clap"
+  $ lp 2
+  $ s "house:4(3,8,2)"
+
+
+p "hh"
+  $ lp 1
+  $ euclid "<3 5 7>" "16"
+  $ s "[~ gretsch:4]"
+
+
+
+p "glass"
+  $ lp 5
+  $ euclid "<5 9 13 7>" 16
+  $ s "bottle"
+
+
+p "moog"
+  $ lp 6
+  $ fast 4
+  $ n (arp "up" "<a5'm7s9>")
+  -- $ n (arp "up" "<a5'sus4 a5'min7 a5'm7s9 a5'min7>")
+  # s "superpwm"
+  # voice 0.6
+  # lfo 0.9
+  # pitch1 2.4
+
+
+hush_
+
+p "bass"
+  $ lp 4
+  -- $ n (fmap (+ 24) "[<a3 a3 f3 g3> ~ ~ ~]")
+  $ n (fmap (+ 24) "<a3 [[~ c4 c4 ~] c4] f3 [[~ g3 g3 ~] g3] d3 [[~ e3 e3 ~] e3] f3 [~ [a2,a3] ~ [a2,a3]]>")
+  # s "superhammond"
+  # voice 6
+
+
+
+  -- $ n "[a3 ~]*4"
+  -- $ fill4 (n "<a3*4 a3*4 c4*4 ds4*4>" # s "superhammond" # voice 6)
+  -- $ n "<c4*4 c4*4 es3*4 g3*4>"
+  # s "superhammond"
+  # voice 6
+
+
+hush_
+
+p "chip"
+  $ lp 3
+  $ n (arp "up" "[~ <a4'min*4 a4'min*4 f4'maj*4 g4'maj*4>]")
+  # s "superchip"
+
+p "chord"
+  $ lp 7
+  $ n "[~ [c4'maj,c5'maj]]*2"
+  -- $ n "[~ [<[a4'min,a5'min], [g4'maj,g5'maj] [d4'min,d5'min] [e4'min,e5'min]>]]*2"
+  # s "supermandolin"
+  # delaytime 0.333
