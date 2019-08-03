@@ -4,7 +4,7 @@ import mido
 import threading
 import queue
 
-from time import time
+from time import time, sleep
 from pythonosc import udp_client
 from pythonosc import osc_message_builder
 
@@ -26,7 +26,7 @@ colors = {
 }
 
 mixers = [[0 for i in range(8)] for m in range(8)]
-
+mini = [[0 for i in range(8)] for m in range(8)]
 muted = [[False for i in range(8)] for m in range(8)]
 
 def select_control(new_mode):
@@ -67,6 +67,8 @@ def sync_channel_light(channel):
         note = note_from_coords(channel, i)
         if i <= val:
             port.send(mido.Message('note_on', note=note, velocity=colors[mode]))
+        elif i == val + 1 and mini[mode][channel] != 0:
+            port.send(mido.Message('note_on', channel=2, note=note, velocity=colors[mode]))
         else:
             port.send(mido.Message('note_on', note=note, velocity=0))
 
@@ -78,8 +80,18 @@ def sync_grid():
 def set_channel_val(channel, new_val):
     global mode
 
-    # Save the new value in the mixer
-    mixers[mode][channel] = new_val
+    # Fix the new val according to the current val
+    current_val = mixers[mode][channel]
+    if new_val == current_val and mini[mode][channel] > 0:
+        mini[mode][channel] -= 1
+    elif new_val == current_val - 1:
+        mini[mode][channel] = 4
+        mixers[mode][channel] = new_val
+    elif new_val == current_val + 1 and mini[mode][channel] < 4:
+        mini[mode][channel] += 1
+    else:
+        mini[mode][channel] = 0
+        mixers[mode][channel] = new_val
 
     # Then take care of the lights
     sync_channel_light(channel)
@@ -103,7 +115,7 @@ def set_channel_val(channel, new_val):
         osc_k = "dly" + str(channel)
     else:
         osc_k = "cc" + str(mode) + "_" + str(channel)
-    osc_value = new_val / 7
+    osc_value = mixers[mode][channel] / 7.0 + (1/7.0) * 0.2 * mini[mode][channel]
     print([osc_k, osc_value])
     client.send_message("/ctrl", [osc_k, osc_value])
 
@@ -137,12 +149,19 @@ def setup():
             val = 4
         elif view == 5:
             val = 7
+        elif view == 0 or view == 1 or view == 2 or view == 3:
+            val = 5
         else:
             val = 0
         mode = view
         for ch in range(8):
             set_channel_val(ch, val)
             toggle_channel_mute(ch)
+            sleep(0.05)
+            # toggle_channel_mute(ch)
+            # sleep(0.1)
+            if view != 4 and view != 5:
+                toggle_channel_mute(ch)
     mode = 7
 
 
