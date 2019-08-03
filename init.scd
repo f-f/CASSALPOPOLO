@@ -1,3 +1,4 @@
+
 (
   // configure the sound server: here you could add hardware specific options
   // see http://doc.sccode.org/Classes/ServerOptions.html
@@ -26,9 +27,12 @@
 s.latency = 0.5; // increase this if you get "late" messages
 );
 
-// ~dirt.stop();
 
 MIDIClient.init;
 ~midiOut = MIDIOut.newByName("Scarlett 2i4 USB", "Scarlett 2i4 USB");
 ~dirt.soundLibrary.addMIDI(\volca, ~midiOut);
 ~midiOut.latency = 0;
+
+~dirt.stop();
+
+
