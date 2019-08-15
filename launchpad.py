@@ -10,7 +10,10 @@ from pythonosc import osc_message_builder
 
 client = udp_client.SimpleUDPClient("127.0.0.1", 6010)
 
-port = mido.open_output('Launchpad MK2')
+mido.set_backend('mido.backends.rtmidi/LINUX_ALSA')
+# port = mido.open_output('Launchpad MK2')
+launchpad = 'Launchpad MK2:Launchpad MK2 MIDI 1 24:0'
+port = mido.open_output(launchpad)
 
 mode = 7
 
@@ -165,7 +168,7 @@ def setup():
     mode = 7
 
 
-with mido.open_input('Launchpad MK2') as inport:
+with mido.open_input(launchpad) as inport:
     setup()
     select_control(mode)
 
