@@ -5,7 +5,7 @@
 setbpm 124
 
 
-hush_
+hush
 
 p "k" (lp 0 (s "house:8*4"))
 

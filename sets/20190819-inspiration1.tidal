@@ -1,0 +1,32 @@
+-- Compat info - Tidal commit: d15bd409097afc342570aeb1d5df872f0ed8b
+
+:script ../Prelude.hs
+
+syncmidi 1
+
+setbpm 128
+
+
+p "k"
+$ lp 0
+$ s "bd!4"
+
+sendmidi
+  $ slow 8
+  $ n "[e3]!8 [c4]!8 [d4]!8 [a3]!8"
+
+stopmidi
+
+p "hh"
+$ lp 1
+$ slow 4
+$ euclid "<7 11 7>" 16
+$ s "[~ hh:0]!4"
+
+
+p "s"
+$ lp 2
+$ slow 2
+$ degrade
+$ euclid "<11 13 9 4>" 16
+$ s "~ sd ~ sd"

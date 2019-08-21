@@ -1,0 +1,57 @@
+-- Compat info - Tidal commit: d15bd409097afc342570aeb1d5df872f0ed8b
+
+:script ../Prelude.hs
+
+do
+  syncmidi 1
+  setbpm 128
+
+ciak
+
+
+p "k"
+$ lp 0
+$ s "bd!4"
+
+-- 036
+sendmidi
+$ slow 2
+-- $ n "c5"
+-- $ n "[c5,c6'maj]"
+-- $ n "<[c5,c6'maj] [c5,c6'min]>"
+$ n $ fmap (+ 24) "<[c3,c4,ds4,g4] [ds3,as4,ds4,g4] [g2,g3,as3,d4] [f2,f3,a3,c4]>"
+
+p "moog"
+  $ lp 6
+  $ n "[~ [ds4,g5,ds5,g4]]!4"
+  # s "superpwm"
+  # crush 4
+  # voice 0.6
+  # lfo 0.9
+  # pitch1 2.4
+
+
+p "bass"
+  $ lp 4
+  $ n "[[c3,c4] ~]!4"
+  # s "superhammond"
+  # voice 6
+  # delaytime 0.333
+
+p "hh" $ silence
+
+p "hh"
+  $ lp 1
+  $ s "[~ hh]!4"
+  -- $ fill1 (s "hh(9,16,6)")
+  -- $ s "[hh:0 hh:0 hh:0 ~]!4"
+
+p "cp"
+  $ lp 2
+  $ s "[~ cp]!2"
+
+
+p "glass"
+  $ lp 5
+  $ s "bottle(5,8,3)"
+  -- $ s "bottle(<5 8 11>, <32 16 13>,3)"
