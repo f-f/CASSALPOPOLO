@@ -24,7 +24,7 @@
     ~dirt.start(57120, [0, 0, 0, 0, 0, 0, 0, 0, 2, 2]);
   };
 
-s.latency = 0.5; // increase this if you get "late" messages
+s.latency = 0.125; // increase this if you get "late" messages
 );
 
 
@@ -36,3 +36,6 @@ MIDIClient.init;
 ~dirt.stop();
 
 
+Server.default.record;
+
+Server.default.stopRecording;
