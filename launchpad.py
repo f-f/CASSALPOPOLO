@@ -10,9 +10,9 @@ from pythonosc import osc_message_builder
 
 client = udp_client.SimpleUDPClient("127.0.0.1", 6010)
 
-mido.set_backend('mido.backends.rtmidi/LINUX_ALSA')
-# port = mido.open_output('Launchpad MK2')
-launchpad = 'Launchpad MK2:Launchpad MK2 MIDI 1 24:0'
+# mido.set_backend('mido.backends.rtmidi/LINUX_ALSA')
+launchpad ='Launchpad MK2'
+# launchpad = 'Launchpad MK2:Launchpad MK2 MIDI 1 24:0'
 port = mido.open_output(launchpad)
 
 mode = 7
@@ -149,11 +149,13 @@ def setup():
     global mode
     for view in range(8):
         if view == 7 or view == 6:
-            val = 4
+            val = 3
         elif view == 5:
             val = 7
-        elif view == 0 or view == 1 or view == 2 or view == 3:
-            val = 5
+        elif view == 0 or view == 1:
+            val = 1
+        elif view == 2 or view == 3:
+            val = 3
         else:
             val = 0
         mode = view
