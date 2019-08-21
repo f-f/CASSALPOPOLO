@@ -1,3 +1,5 @@
 *.cabal
 *.history
 .stack-work/*
+samples
+samples-stash
