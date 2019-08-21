@@ -69,7 +69,7 @@ let killSample sampleChannel cutGroup = do
 -- | Sync the tempo on the Volca with Tidal
 let syncmidi factor = do
       p "midiclock" $ midicmd (parseBP_E $ "midiClock*" ++ show (96 * factor)) # s "volca"
-      threadDelay 100000
+      threadDelay 1000000
       once $ midicmd "stop" # s "volca"
       p "midictl" $ midicmd "start/4" # s "volca"
       threadDelay 1000000
@@ -95,12 +95,23 @@ let lp idx pat
                      # orbit (fromInteger idx))
 
 
-
-let fill1 f = every 4 (const f)
-    fill2 f = whenmod 8 6 (const f)
-    fill3 f = whenmod 12 9 (const f)
-    fill4 f = whenmod 16 12 (const f)
+let ciak = do
+      p "k" $ s "bd!4"
+      sendmidi $ n "c4!4"
+      -- one beat at 120
+      threadDelay 2000000
+      stopmidi
+      p "k" $ silence
 
 
 -- | Get a Markov-generated harmony of length len
 harm len = fmap Markov.render (Markov.getHarmony len)
+
+
+fill1 f = every 4 (const f)
+
+fill2 f = whenmod 8 6 (const f)
+
+fill3 f = whenmod 12 9 (const f)
+
+fill4 f = whenmod 16 12 (const f)
