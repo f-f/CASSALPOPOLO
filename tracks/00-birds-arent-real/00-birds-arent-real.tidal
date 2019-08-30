@@ -2,53 +2,87 @@
 
 :script ../../Prelude.hs
 
-setbpm 140
+syncmidi 1
 
-p "h"
-$ whenmod 6 4 (const $ sound "~")
-$ sound "hh(7,16,14)"
-  # orbit 5
-  # speed "1.2"
-  # gain "0.9"
-  # pan "0"
-  # reverbPan "1"
-  # room 0.4
+setbpm 170
 
 
 hush
 
 
-syncvolca 1
+
+p "b"
+  $ lp 4
+  -- $ sometimes (0.25 ~>)
+  -- $ sometimes (degrade)
+  -- $ euclid "<7 5 11 13>" "<16 8 16 32>"
+  $ n "[[[c3 c3] c3] ~] ~ ~ ~"
+  -- $ n "{c2,c3}*4"
+  -- $ n "c3 c3 af2 bf2"
+  # s "supersaw"
+  # release (range 0.5 0.6 $ fast 3 $ sine)
+  # sustain (range 0.4 0.8 $ fast 17 $ saw)
+  # decay (range 0.4 0.6 $ fast 8 $ sine)
+  # voice 0.3
 
 
+p "hh"
+  $ lp 1
+  -- $ sometimes (rev)
+  -- $ sometimes (degrade)
+  -- $ euclid "<7 11 23 16>" "<8 16 32 16>"
+  -- $ (~> 0.25)
+  $ euclid "<10 12 13 11 >" 16
+  $ "gretsch:4"
 
-
-
-
-
-
-
-
-
-
-
+p "s"
+  $ lp 2
+  $ s "[~ {house:4,house:6} ~ house:4]"
 
 
 p "k"
   $ lp 0
-  $ slow 4 $ euclid 5 8 $ "bd*4"
+  $ slow 1
+  $ "house:0*4"
 
-p "s" $  s "~ sd ~ sd"
+
+
+
+
+
+
+
+
+p "piano"
+  $ lp 5
+  -- $ slow 8
+  -- $ euclid "<5 13 7 11>" "<8 16 8 16>"
+  -- $ n "c4'min c4'min af3'maj bf3'maj"
+
+  -- $ euclid 8 16 $ n "c5"
+  $ slow 8 $ n "[c5 d5 em7]"
+  # s "superpiano"
+
+
+
+
+
+
+
+
+p "s" $ silence
 
 
 anticipateIn "k" 1 $ "sd"
 
 
+d1 $ sound "amencutup*8" # n (irand 8)
 
 
 
 
-hush
+
+hush_
 
 
 
@@ -59,17 +93,6 @@ p "k"
   # lpf 20000
 
 
-p "hh"
-  -- $ sometimes (rev)
-  $ sometimes (degrade)
-  -- $ lp 1
-  $ euclid "<7 11 23 16>" "<8 16 32 16>"
-  $ "gretsch:4"
-
-
-p "s"
-  -- $ lp 2
-  $ s "[~ house:4 ~ house:9]"
 
 
 
@@ -81,29 +104,10 @@ p "s2"
   # s "gretsch"
 
 
-p "b"
-  $ lp 4
-  $ sometimes (0.25 ~>)
-  $ sometimes (degrade)
-  $ euclid "<7 5 11 13>" "<16 8 16 32>"
-  $ slow 4
-  $ n "c3 c3 af2 bf2"
-  # s "supersaw"
-  # lpf 5000
-  # gain 0.9
+p "piano" $ silence
 
 
-p "piano"
-  $ slow 4
-  $ euclid "<5 13 7 11>" "<8 16 8 16>"
-  $ n "c4'min c4'min af3'maj bf3'maj"
-  # s "superpiano"
-  # lpf (slow 4 $ (sine * 10000) + 10000)
-  -- # delayfb 0.6
-  -- # delay 0.5
-  # gain 0.8
-
-hush
+hush_
 
 
 p "sam"
@@ -113,3 +117,13 @@ p "sam"
   # s "hawking"
   # delaytime 0.3333
   # gain 0.7
+
+p "h"
+$ whenmod 6 4 (const $ sound "~")
+$ sound "hh(7,16,14)"
+  # orbit 5
+  # speed "1.2"
+  # gain "0.9"
+  # pan "0"
+  # reverbPan "1"
+  # room 0.4
