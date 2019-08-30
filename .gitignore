@@ -1,5 +1,6 @@
 *.cabal
 *.history
 .stack-work/*
+orca
 samples
 samples-stash
