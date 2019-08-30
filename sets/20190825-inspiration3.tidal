@@ -1,0 +1,123 @@
+-- Compat info - Tidal commit: d15bd409097afc342570aeb1d5df872f0ed8b
+
+:script ../Prelude.hs
+
+do
+  syncmidi 1
+  setbpm 180
+
+ciak
+
+
+
+lp 0
+  $ slow 4
+  $ every' 8 7 (|>| s "909!2 909*2 909*4")
+  $ s "909*4"
+  # delaytime 0.3333
+
+
+
+-- Minilogue 071
+sendmidi
+  $ slow 2
+  $ n "<a5 [[~ c6 c6 ~] c6] f5 [[~ g5 g5 ~] g5] d5 [[~ e5 e5 ~] e5] f5 [~ [a4,a5] ~ [a4]]>"
+
+
+
+lp 1
+  $ s "[~ hh ~ ~]"
+
+lp 2
+  $ slow 2
+  $ s "~ ~ cp ~"
+
+
+lp 6
+  -- $ (0.125 ~>)
+  $ slow 2
+  -- $ n "[~ [c4'min,c5'min]]!2 [~ [as3'maj,as4'maj]]!2"
+  $ n "[~ [<[a4'min,a5'min], [g4'maj,g5'maj] [d4'min,d5'min] [e4'min,e5'min]>]]*2"
+  # s "supermandolin"
+  # delaytime 0.3333 -- (range 0.3 0.36 $ slow (rand*4 + 1) sine)
+  # sustain 0.9
+  # accelerate 0.04
+  # pan (fast "<11 3 5 7>" $ sine)
+
+
+lp 5
+  $ jux (# pan (fast 1 $ sine))
+  $ loopAt (28*1.4)
+  $ chop 532
+  $ s "<grey128:5 ~ grey128:0>"
+
+
+do
+  lp 5 $ silence
+  stopmidi
+  lp 4
+    $ fast 4
+    $ n (arp "up" "<c5'min7>")
+    # s "superpwm"
+    # voice 0.6
+    # lfo 0.9
+    # pitch1 2.4
+
+
+
+  -- 071, +1 oct
+sendmidi
+  $ slow 1
+  $ fmap (+12)
+  $ fill2 (n "<c4(3,8) as3(5,8,4) ds4(3,8) f4>")
+  $ n "<c4(3,8) as3(5,8,4) f3(3,8) g3(7,8)>"
+
+
+stopmidi
+
+lp 3
+  $ juxBy 0.5 (# pan (slow 7 $ sine))
+  $ loopAt 4
+  $ every' 8 3 (juxBy 0.5 $ rev)
+  $ chop 64
+  $ fill2 (slow 2 $ s "[[bottle(5,8,4)!4] [[cp*2]!2 cp*4 cp*8]]" # speed 8)
+  $ s "jung4:8"
+
+lp 4
+  $ loopAt 4
+  $ chop 64
+  $ fill2 (s "drop:3")
+  $ s "~"
+
+
+
+lp 5
+  $ jux (# pan (fast "3 5 7 11" $ sine))
+  $ loopAt (24*1.4)
+  $ chop 532
+  $ s "<grey128:6>"
+
+
+
+do
+  lp 3
+    $ juxBy 0.5 (# pan (slow 7 $ sine))
+    $ loopAt 4
+    $ chop 64
+    $ fill2 (slow 2 $ s "[amen2:4] [[cp*2]!2 cp*4 cp*8]]" # speed 8)
+    $ s "<amen2:8 amen2:10>!2"
+    # speed 2
+  lp 5 $ silence
+
+
+lp 7
+  $ slow 1
+  $ fmap (+12)
+  $ fill2 (n "<c4'min7(3,8) as3'maj7(5,8,4) ds4'maj7(3,8) f4'maj7>" # s "supersaw")
+  $ n "<c4'min(3,8) as3'maj7(5,8,4) f3'maj7(3,8) g3'maj7(7,8)>"
+  # s "supersaw"
+  # crush (slow 3 "7 5 8")
+  # pan (fast "7 5 3 11" $ square)
+
+
+shhh
