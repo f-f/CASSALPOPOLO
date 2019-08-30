@@ -21,17 +21,18 @@
     // start listening on port 57120
     // We spawn several orbits on the first 2 channels (main outputs)
     // and just some on the others - as they are just monitors
-    ~dirt.start(57120, [0, 0, 0, 0, 0, 0, 0, 0, 2, 2]);
+    ~dirt.start(57120, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2]);
   };
 
 s.latency = 0.125; // increase this if you get "late" messages
 );
 
-
+(
 MIDIClient.init;
 ~midiOut = MIDIOut.newByName("Scarlett 2i4 USB", "Scarlett 2i4 USB");
 ~dirt.soundLibrary.addMIDI(\volca, ~midiOut);
 ~midiOut.latency = 0;
+);
 
 ~dirt.stop();
 
