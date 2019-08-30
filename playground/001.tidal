@@ -1,0 +1,92 @@
+
+:script ../Prelude.hs
+
+syncmidi 1
+
+setbpm 126
+
+
+p "k"
+  $ lp 0
+  -- $ euclid "<11 7 13 5>" 16
+  $ "house:8*4"
+  # delaytime 0.333
+
+
+p "hh"
+  $ lp 1
+  -- $ euclid "<11 7 13>" 16
+  $ s "[gretsch:4 ~]*2"
+  -- $ s "gretsch:4"
+
+p "s"
+  $ lp 2
+  $ s "~ gretsch:23"
+  # delaytime 0.333
+
+
+
+p "s"
+  $ lp 2
+  $ "[house:4 ~]*2"
+
+
+p "chord"
+  $ lp 7
+  $ n "[~ [d4'min,d5'min]]*2"
+  -- $ n "[~ [<[a4'min,a5'min], [g4'maj,g5'maj] [d4'min,d5'min] [e4'min,e5'min]>]]*2"
+  # s "supermandolin"
+  # delaytime 0.333
+
+
+
+p "moog"
+  $ lp 6
+  $ fast 4
+  $ n (arp "<up down>" "<d5'min7>")
+  -- $ n (arp "up" "<g5'sus4 a5'sus4 d5'min7 d5'min7>")
+  -- $ n (arp "up" "<a5'sus4 a5'min7 a5'm7s9 a5'min7>")
+  # s "superpwm"
+  # voice 0.6
+  # lfo 0.9
+  # pitch1 2.4
+
+
+p "bass"
+  $ lp 4
+  $ n "[d4 ~]*2"
+  -- $ fill4 (n "<a3*4 a3*4 c4*4 d4*4>" # s "superhammond" # voice 6)
+  -- $ n "<c4*4 c4*4 es3*4 g3*4>"
+  # s "superhammond"
+  # voice 6
+
+
+
+p "ping"
+  $ lp 5
+  $ s "superhammond(7,16,2)"
+  # n (fmap (+ 2) (scale "minor" (irand 8)))
+
+
+
+
+
+-- Take a bow, but techno
+lp 0
+  $ s "909!4"
+
+lp 1
+  $ s "hh(<5 3>,8,4)"
+
+lp 2
+  $ s "[~ cp]!2"
+
+lp 3
+  $ n "[[d3,d4] ~]*4"
+  # s "superhammond"
+  # voice 6
+
+-- Minilogue 497, add latch
+sendmidi
+  $ slow 32
+  $ n "<[[d4,d5'maj] ~ [d4,d5'aug] ~]*2 [[d4,d5,g5,b5] ~ [ds4, ds5,g5,b5] ~]*2>"
