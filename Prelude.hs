@@ -1,5 +1,6 @@
 import Control.Concurrent (threadDelay)
 import Sound.Tidal.ParseBP (parseBP_E)
+import Control.Monad (void)
 
 :set +m
 
@@ -11,8 +12,8 @@ setbpm bpm = setcps (bpm/60/4)
 --   Assign them like `gain q1`, etc
 maxgain = 1.3
 maxrev = 1.0
-minhpf = 300
-maxlpf = 9000
+minhpf = 20
+maxlpf = 20000
 maxfb = 0.8
 ccVol idx = range 0 maxgain $ cF 0 ("vol" ++ show idx)
 
@@ -21,7 +22,7 @@ let ccLpf idx = selectF (segment 256 $ cF 0 ("toggle5_" ++ show idx))
                   silence
 
 let ccHpf idx = selectF (segment 256 $ cF 0 ("toggle4_" ++ show idx))
-                  [const $ rangex minhpf 20000 (cF 0 ("hpf" ++ show idx)), const 20]
+                  [const $ rangex minhpf 20000 (cF 20 ("hpf" ++ show idx)), const 20]
                   silence
 
 let ccRevRoom idx = selectF (segment 256 $ cF 0 ("toggle3_" ++ show idx))
@@ -32,11 +33,11 @@ let ccRevSize idx = selectF (segment 256 $ cF 0 ("toggle2_" ++ show idx))
                     [const $ range 0 maxrev (cF 0 ("revSize" ++ show idx)), const 0]
                     silence
 
-let ccDlyFb idx = selectF (segment 256 $ cF 0 ("toggle1_" ++ show idx))
+let ccDlyFb idx = selectF (segment 512 $ cF 0 ("toggle1_" ++ show idx))
                     [const $ range 0 maxfb (cF 0 ("dlyFb" ++ show idx)), const 0]
                     silence
 
-let ccDly idx = selectF (segment 256 $ cF 0 ("toggle0_" ++ show idx))
+let ccDly idx = selectF (segment 512 $ cF 0 ("toggle0_" ++ show idx))
                     [const $ range 0 maxfb (cF 0 ("dly" ++ show idx)), const 0]
                     silence
 
@@ -79,20 +80,23 @@ let sendmidi pat = p "volcanotes" $ pat # s "volca" # midichan 0
 
 let stopmidi = p "volcanotes" $ silence
 
--- | Fix the `hush` function so we resync the midi
-let hush_ = hush >> (syncmidi 1)
+-- | Stop the Launchpad channels and the midi
+let shh = void $ traverse (\i -> p i $ silence) [0..7]
+
+let shhh = shh >> stopmidi
 
 -- | A better `p` that we can map to MIDI controls for volume and muting
 let lp idx pat
-      = mutable idx (pat
+      = p idx
+      $ mutable idx (pat
+                     # orbit (fromInteger idx))
                      # gain (ccVol idx)
                      # lpf (ccLpf idx)
                      # hpf (ccHpf idx)
-                     # room (ccRevRoom idx)
-                     # size (ccRevSize idx)
                      # delay (ccDly idx)
                      # delayfb (ccDlyFb idx)
-                     # orbit (fromInteger idx))
+                     # room (ccRevRoom idx)
+                     # size (ccRevSize idx)
 
 
 let ciak = do
