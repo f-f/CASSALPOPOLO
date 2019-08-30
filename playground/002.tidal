@@ -1,0 +1,51 @@
+
+
+
+
+
+
+lp 5
+  $ slow 4
+  $ fmap (+ 15)
+  $ fill2 (n "c3 e3" # s "supersaw" # crush 2)
+  $ n "[[a4 b4] c5 g5 e5] [[e5 e5] e5 e5 [c5 a4]] a4 [a4 ~]"
+  # s "supersaw"
+  # crush 3
+
+
+-- 481
+sendmidi
+  $ slow 4
+  $ n "[c4,c5'min]"
+-- $ n $ fmap (+ 24) "<[c3,c4,ds4,g4] [ds3,as4,ds4,g4] [g2,g3,as3,d4] [f2,f3,a3,c4]>"
+-- $ n $ fmap (+ 24) "<[gs2,gs2'maj] [as2,as2'maj] [c3,c3'min]!2>"
+
+
+-- 037
+sendmidi
+  $ n "<c4 c4 d4 d4 g4 g4 e4 e4>(5,8,4)"
+
+
+-- 483
+sendmidi
+  $ slow 2
+  $ n "<f5 gs5 cs5 ds5>" -- (<13 17 15>,24,<3 5 7>)"
+
+lp 0
+  $ s "bd!4"
+
+lp 1
+  $ s "[~ hh]!4"
+  -- $ fill1 (s "hh(9,16,6)")
+  -- $ s "[hh:0 hh:0 hh:0 ~]!4"
+
+lp 2
+  $ s "{[hh(<7 9 5>,16)]/2}%4"
+  # pan (fast "<11 3 5 7>" $ sine)
+
+
+
+lp 5
+  $ slow 2
+  $ s "perc:12(<11 13 17>?,16,3)"
+
