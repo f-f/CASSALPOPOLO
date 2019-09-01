@@ -2,7 +2,7 @@
 
 # CASSALPOPOLO
 
-## Prelude - "La Spièga"
+## Prelude
 
 > Give us some 4/4 kick, we want to dance!
 >
@@ -17,15 +17,17 @@ And AUTOMATED ones.
 
 This is [Algorave]. Let's all dance together to the sound of bits and beats.
 
-## Contents - "Bella sò"
+## Contents, AKA the beatz
 
 This repo contains all the code responsible for generating all the beats over at [CASSALPOPOLO] (for pictures, check out [`@cassalpopolo` on Instagram][instagram])
 
 ### Releases:
 
-* **Arangiu** - [Music](), [Code](releases/arangiu)
+**Arangiu** (2019) - [Music](), [Code](releases/arangiu)
 
-## Setup - "E tando?"
+[<img height="300" src="logo/arangiu.png">]()
+
+## Setup
 
 Music is made from three components:
 
