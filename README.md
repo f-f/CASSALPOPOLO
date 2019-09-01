@@ -19,11 +19,11 @@ This is [Algorave]. Let's all dance together to the sound of bits and beats.
 
 ## Contents - "Bella sò"
 
-This repo contains all the code responsible for generating all the beats over at [CASSALPOPOLO] (for pictures, check out `@cassalpopolo` on Instagram)
+This repo contains all the code responsible for generating all the beats over at [CASSALPOPOLO] (for pictures, check out [`@cassalpopolo` on Instagram][instagram])
 
 ### Releases:
 
-* **Istadi, Arangiu** - [Music](), [Code]()
+* **Arangiu** - [Music](), [Code](releases/arangiu)
 
 ## Setup - "E tando?"
 
@@ -53,3 +53,5 @@ gsutil rsync -r gs://cassalpopolo samples
 
 [Algorave]: https://algorave.com/
 [CASSALPOPOLO]: https://soundcloud.com/cassalpopolo
+[instagram]: https://www.instagram.com/cassalpopolo
+
