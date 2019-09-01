@@ -81,6 +81,8 @@ let sendmidi pat = p "volcanotes" $ pat # s "volca" # midichan 0
 let stopmidi = p "volcanotes" $ silence
 
 -- | Stop the Launchpad channels and the midi
+let sh idx = p idx $ silence
+
 let shh = void $ traverse (\i -> p i $ silence) [0..7]
 
 let shhh = shh >> stopmidi
@@ -88,8 +90,20 @@ let shhh = shh >> stopmidi
 -- | A better `p` that we can map to MIDI controls for volume and muting
 let lp idx pat
       = p idx
-      $ mutable idx (pat
-                     # orbit (fromInteger idx))
+      $ mutable idx pat
+                    # orbit (fromInteger idx)
+                    # gain (ccVol idx)
+                    # lpf (ccLpf idx)
+                    # hpf (ccHpf idx)
+                    # room (ccRevRoom idx)
+                    # size (ccRevSize idx)
+
+
+-- | Like lp, but with delay
+let lpd idx pat
+      = p idx
+      $ mutable idx pat
+                     # orbit (fromInteger idx)
                      # gain (ccVol idx)
                      # lpf (ccLpf idx)
                      # hpf (ccHpf idx)
