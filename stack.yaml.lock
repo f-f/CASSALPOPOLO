@@ -5,19 +5,12 @@
 
 packages:
 - completed:
-    cabal-file:
-      size: 2952
-      sha256: 52de6de41c4a9632fd083e787c799216bacf70ebfdf8728c708ed4a944a5e71f
-    name: tidal
-    version: 1.0.13
-    git: https://github.com/tidalcycles/Tidal
+    hackage: tidal-1.4.2@sha256:2aa63f42e1ded5e702c943556fb0049eb6915eeca28f09068c029abae1520cb2,3554
     pantry-tree:
-      size: 9132
-      sha256: 66b114b5f288b9e4798f53c11c433eae4671f4b356350b72a78aa215f2ccd23d
-    commit: d15bd409097afc342570aeb1d5df872f0ed8b3c0
+      size: 2743
+      sha256: 3c0e09039ffd7d9a5e4b75fc7cbe9b731374a269529d785f5c0fb5609c40c9b5
   original:
-    git: https://github.com/tidalcycles/Tidal
-    commit: d15bd409097afc342570aeb1d5df872f0ed8b3c0
+    hackage: tidal-1.4.2
 snapshots:
 - completed:
     size: 498155
