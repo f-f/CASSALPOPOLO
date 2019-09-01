@@ -1,57 +1,96 @@
--- Compat info - Tidal commit: d15bd409097afc342570aeb1d5df872f0ed8b
-
 :script ../Prelude.hs
 
 do
   syncmidi 1
   setbpm 128
 
+bass = s "superhammond" # voice 6 # delaytime 0.333 # crush 6
+
 ciak
 
 
-p "k"
-$ lp 0
-$ s "bd!4"
 
--- 036
-sendmidi
-$ slow 2
--- $ n "c5"
--- $ n "[c5,c6'maj]"
--- $ n "<[c5,c6'maj] [c5,c6'min]>"
-$ n $ fmap (+ 24) "<[c3,c4,ds4,g4] [ds3,as4,ds4,g4] [g2,g3,as3,d4] [f2,f3,a3,c4]>"
+resetCycles
 
-p "moog"
-  $ lp 6
+do
+  -- k
+  lp 0
+    $ every' 8 7 (|>| s "909!2 909*2 909*4")
+    $ s "909!4"
+  -- 036, delay, latch
+  sendmidi
+    $ slow 2
+    -- $ n "c5"
+    -- $ n "[c5,c6'maj]"
+    $ n "<[c5,c6'maj] [c5,c6'min]>"
+
+
+-- hh
+lp 1
+  $ s "[~ gretsch:4]!4"
+
+
+
+-- bass
+lpd 4
+  -- every' 8 7 (n "[[ds3,ds4] ~]*2 [cs3,cs4](5,8,4) [[~ [cs3,cs4]] ~]" # bass)
+  $ n "[[c3,c4] ~]!4"
+  # bass
+
+
+-- moog
+lp 5
   $ n "[~ [ds4,g5,ds5,g4]]!4"
   # s "superpwm"
   # crush 4
   # voice 0.6
   # lfo 0.9
   # pitch1 2.4
+  # pan (fast 2 $ square)
 
+-- break
 
-p "bass"
-  $ lp 4
-  $ n "[[c3,c4] ~]!4"
-  # s "superhammond"
-  # voice 6
+-- zizek!
+lpd 6
+  $ loopAt (3*128/180)
+  $ chop 32
+  $ fill2 (s "z180_1:0 ~ ~" # speed 3 # delaytime 0.666)
+  $ s "<z180_3:0 ~ z180_3:1 ~>"
+  # pan "<1 0 0 1>"
   # delaytime 0.333
 
-p "hh" $ silence
+do
+  sendmidi
+    $ slow 2
+    $ n $ fmap (+ 24) "<[c3,c4,ds4,g4] [ds3,as4,ds4,g4] [g2,g3,as3,d4] [f2,f3,a3,c4]>"
+  -- cp
+  lp 2
+    -- $ slow 2
+    -- $ degrade
+    -- $ euclid "<5 7 9 4>" 16
+    $ s "[~ cp]!2"
+  -- bass
+  lpd 3
+    $ slow 2
+    $ n "<[[c3,c4] ~]!8 [[as2,ds3] ~]!8 [[g2,g3] ~]!8 [[f2,f3] ~]!8>"
+    # bass
 
-p "hh"
-  $ lp 1
-  $ s "[~ hh]!4"
-  -- $ fill1 (s "hh(9,16,6)")
-  -- $ s "[hh:0 hh:0 hh:0 ~]!4"
-
-p "cp"
-  $ lp 2
-  $ s "[~ cp]!2"
 
 
-p "glass"
-  $ lp 5
+-- glass
+lpd 7
   $ s "bottle(5,8,3)"
   -- $ s "bottle(<5 8 11>, <32 16 13>,3)"
+  # pan (fast 5 $ square)
+
+-- hh
+lp 1
+  $ every 2 (|>| s "gretsch:5(9,16,6)")
+  $ s "[gretsch:4 gretsch:5 gretsch:16 ~]!4"
+
+
+
+stopmidi
+
+
+shhh

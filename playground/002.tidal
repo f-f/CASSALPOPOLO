@@ -49,3 +49,38 @@ lp 5
   $ slow 2
   $ s "perc:12(<11 13 17>?,16,3)"
 
+
+
+
+
+
+
+
+
+
+
+
+lp 5
+  $ juxBy 0.8 (# pan (fast 3 $ square))
+  $ fmap (+ 17)
+  -- $ n "[~ g5]!2"
+  -- $ fill2 (n "~" # s "supersaw" # crush 2)
+  $ slow 8 $ n "[e3]!8 [c4]!8 [d4]!8 [a3]!8"
+  # s "supersaw"
+  # crush 3
+
+p 5 $ silence
+
+
+lp 1
+  -- $ slow 4
+  -- $ euclid "<7 11 7>" 16
+  $ s "[~ hh:0]!4"
+
+
+lp 2
+  -- $ slow 2
+  -- $ degrade
+  -- $ euclid "<11 13 9 4>" 16
+  $ s "~ sd ~ cp"
+

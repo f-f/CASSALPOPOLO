@@ -12,7 +12,7 @@ ciak
 
 lp 0
   $ slow 4
-  $ every' 8 7 (|>| s "909!2 909*2 909*4")
+  -- $ every' 8 7 (|>| s "909!2 909*2 909*4")
   $ s "909*4"
   # delaytime 0.3333
 
@@ -62,6 +62,9 @@ do
     # voice 0.6
     # lfo 0.9
     # pitch1 2.4
+    # pan (fast "3 5" $ sine)
+
+
 
 
 
@@ -73,23 +76,22 @@ sendmidi
   $ n "<c4(3,8) as3(5,8,4) f3(3,8) g3(7,8)>"
 
 
-stopmidi
-
 lp 3
-  $ juxBy 0.5 (# pan (slow 7 $ sine))
+  $ juxBy 0.5 (# pan (slow 7 $ range 0.25 0.75 $ sine))
   $ loopAt 4
   $ every' 8 3 (juxBy 0.5 $ rev)
   $ chop 64
   $ fill2 (slow 2 $ s "[[bottle(5,8,4)!4] [[cp*2]!2 cp*4 cp*8]]" # speed 8)
   $ s "jung4:8"
 
+
+
+
 lp 4
   $ loopAt 4
   $ chop 64
   $ fill2 (s "drop:3")
   $ s "~"
-
-
 
 lp 5
   $ jux (# pan (fast "3 5 7 11" $ sine))
@@ -110,14 +112,18 @@ do
   lp 5 $ silence
 
 
+
+
 lp 7
   $ slow 1
   $ fmap (+12)
-  $ fill2 (n "<c4'min7(3,8) as3'maj7(5,8,4) ds4'maj7(3,8) f4'maj7>" # s "supersaw")
-  $ n "<c4'min(3,8) as3'maj7(5,8,4) f3'maj7(3,8) g3'maj7(7,8)>"
+  $ fill2 (n "<c4'min7 as3'maj7 ds4'maj7 f4'maj7>" # s "supersaw")
+  $ n "<c4'min as3'maj7 f3'maj7 g3'maj7>"
   # s "supersaw"
-  # crush (slow 3 "7 5 8")
-  # pan (fast "7 5 3 11" $ square)
+  # crush (slow 3 "3 5 7")
+  # pan (slow 7 $ sine)
+
+
 
 
 shhh

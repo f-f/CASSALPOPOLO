@@ -1,32 +1,63 @@
--- Compat info - Tidal commit: d15bd409097afc342570aeb1d5df872f0ed8b
-
 :script ../Prelude.hs
 
-syncmidi 1
+do
+  syncmidi 1
+  setbpm 180
 
-setbpm 128
+
+do
+  resetCycles
+  lp 4
+    $ loopAt 436
+    $ chop (436*4)
+    $ s "jojos"
+  lp 0
+    $ s "909!2"
 
 
-p "k"
-$ lp 0
-$ s "bd!4"
 
+
+-- 500!
 sendmidi
-  $ slow 8
-  $ n "[e3]!8 [c4]!8 [d4]!8 [a3]!8"
+  -- $ n "c4!2"
+  $ slow 8 $ n "[e3]!8 [c4]!8 [d4]!8 [a3]!8"
+
+
+
+lp 3
+  $ loopAt 6
+  $ chop 100
+  $ s "jojo180"
+
+
+lp 5
+  $ every 3 (jux $ fmap (+ 5))
+  $ rarely (fmap (+ 2))
+  $ n "{~ ~ ~ <[~ d6] [[c6 ~] d6]> ~}%4"
+  # s "supersquare"
+  # pan (square)
+  # crush 3
+
+
+lp 2
+  $ juxBy 0.5 (# pan (slow 7 $ sine))
+  $ loopAt 4
+  $ chop 64
+  $ fill2 (slow 2 $ s "[amen2:4] [[hh*2]!2 hh*4 hh*8]]" # speed 4)
+  $ s "<amen2:8 amen2:10>!2"
+  # speed 2
+
+
+lp 6
+  $ loopAt 8
+  $ chop 8
+  $ n (fmap id "e3 c4 d4 a3")
+  # s "superhammond"
+  # voice 6
+  # crush 2
+
 
 stopmidi
 
-p "hh"
-$ lp 1
-$ slow 4
-$ euclid "<7 11 7>" 16
-$ s "[~ hh:0]!4"
 
-
-p "s"
-$ lp 2
-$ slow 2
-$ degrade
-$ euclid "<11 13 9 4>" 16
-$ s "~ sd ~ sd"
+shhh
