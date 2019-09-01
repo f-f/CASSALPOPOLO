@@ -54,5 +54,12 @@ let d14 = p 14
 let d15 = p 15
 let d16 = p 16
 
-:set prompt "tidal> "
+:{
+let setI = streamSetI tidal
+    setF = streamSetF tidal
+    setS = streamSetS tidal
+    setR = streamSetI tidal
+    setB = streamSetB tidal
+:}
 
+:set prompt "tidal> "

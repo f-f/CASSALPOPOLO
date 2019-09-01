@@ -2,5 +2,4 @@ resolver: lts-13.19
 packages:
 - .
 extra-deps:
-- git: https://github.com/tidalcycles/Tidal
-  commit: d15bd409097afc342570aeb1d5df872f0ed8b3c0
+- tidal-1.4.2
