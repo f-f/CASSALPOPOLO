@@ -5,12 +5,12 @@
 
 packages:
 - completed:
-    hackage: tidal-1.4.2@sha256:2aa63f42e1ded5e702c943556fb0049eb6915eeca28f09068c029abae1520cb2,3554
+    hackage: tidal-1.1.0@sha256:9e4214db7103507455a65ae1f1f22ad60690f45ac9221e46567a4b78768e87aa,3532
     pantry-tree:
       size: 2743
-      sha256: 3c0e09039ffd7d9a5e4b75fc7cbe9b731374a269529d785f5c0fb5609c40c9b5
+      sha256: 72d3094bcc78081a7eb3fa33fee0e990bb199c376f433e09219f0f9101ee5168
   original:
-    hackage: tidal-1.4.2
+    hackage: tidal-1.1.0
 snapshots:
 - completed:
     size: 498155

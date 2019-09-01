@@ -8,8 +8,6 @@ bass = s "superhammond" # voice 6 # delaytime 0.333 # crush 6
 
 ciak
 
-
-
 resetCycles
 
 do
@@ -17,12 +15,12 @@ do
   lp 0
     $ every' 8 7 (|>| s "909!2 909*2 909*4")
     $ s "909!4"
-  -- 036, delay, latch
+  -- 488, delay, latch
   sendmidi
     $ slow 2
-    -- $ n "c5"
-    -- $ n "[c5,c6'maj]"
-    $ n "<[c5,c6'maj] [c5,c6'min]>"
+    $ n "c5"
+    -- $ n "<[c5,c6'maj] [c5,c6'min]>"
+
 
 
 -- hh
@@ -32,7 +30,7 @@ lp 1
 
 
 -- bass
-lpd 4
+lp 4
   -- every' 8 7 (n "[[ds3,ds4] ~]*2 [cs3,cs4](5,8,4) [[~ [cs3,cs4]] ~]" # bass)
   $ n "[[c3,c4] ~]!4"
   # bass
@@ -65,28 +63,25 @@ do
     $ n $ fmap (+ 24) "<[c3,c4,ds4,g4] [ds3,as4,ds4,g4] [g2,g3,as3,d4] [f2,f3,a3,c4]>"
   -- cp
   lp 2
-    -- $ slow 2
-    -- $ degrade
-    -- $ euclid "<5 7 9 4>" 16
     $ s "[~ cp]!2"
   -- bass
-  lpd 3
+  lp 4
     $ slow 2
-    $ n "<[[c3,c4] ~]!8 [[as2,ds3] ~]!8 [[g2,g3] ~]!8 [[f2,f3] ~]!8>"
+    $ n "<[[c3,c4] ~]!8 [[ds3,as3] ~]!8 [[g2,g3] ~]!8 [[f2,f3] ~]!8>"
     # bass
 
 
-
--- glass
-lpd 7
-  $ s "bottle(5,8,3)"
-  -- $ s "bottle(<5 8 11>, <32 16 13>,3)"
-  # pan (fast 5 $ square)
-
--- hh
-lp 1
-  $ every 2 (|>| s "gretsch:5(9,16,6)")
-  $ s "[gretsch:4 gretsch:5 gretsch:16 ~]!4"
+do
+  sh 5
+  -- glass
+  lpd 7
+    $ s "bottle(5,8,3)"
+    -- $ s "bottle(<5 8 11>, <32 16 13>,3)"
+    # pan (fast 5 $ square)
+  -- hh
+  lp 1
+    $ every 2 (|>| s "gretsch:5(9,16,6)")
+    $ s "[gretsch:4 gretsch:5 gretsch:16 ~]!4"
 
 
 
