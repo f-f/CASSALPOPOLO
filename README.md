@@ -12,7 +12,7 @@ Since the early days of our species, humans have always created music, rhythms a
 This is an interesting antropological tangent to go on, but for now let's focus on the fact that since the Computer Age,
 humans did not really exploit the full potential that machines have to offer us.
 
-But this has to stop. We'll take computers back to where they belong: as rhythm-generating devices.
+But this has to stop. We'll take computers back to where they belong: as rhythm-generating devices.  
 And AUTOMATED ones.
 
 This is [Algorave]. Let's all dance together to the sound of bits and beats.
