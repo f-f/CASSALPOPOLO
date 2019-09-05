@@ -8,9 +8,9 @@ bass = s "superhammond" # voice 6 # delaytime 0.333 # crush 6
 
 ciak
 
-resetCycles
 
 do
+  resetCycles
   -- k
   lp 0
     $ every' 8 7 (|>| s "909!2 909*2 909*4")
@@ -19,8 +19,8 @@ do
   sendmidi
     $ slow 2
     $ n "c5"
-    -- $ n "<[c5,c6'maj] [c5,c6'min]>"
 
+sendmidi $ slow 2 $ n "<[c5,c6'maj] [c5,c6'min]>"
 
 
 -- hh
@@ -32,8 +32,11 @@ lp 1
 -- bass
 lp 4
   -- every' 8 7 (n "[[ds3,ds4] ~]*2 [cs3,cs4](5,8,4) [[~ [cs3,cs4]] ~]" # bass)
-  $ n "[[c3,c4] ~]!4"
+  $ n "[~ [c3,c4]]!4"
   # bass
+
+
+-- break!
 
 
 -- moog
@@ -45,8 +48,6 @@ lp 5
   # lfo 0.9
   # pitch1 2.4
   # pan (fast 2 $ square)
-
--- break
 
 -- zizek!
 lpd 6
@@ -67,7 +68,7 @@ do
   -- bass
   lp 4
     $ slow 2
-    $ n "<[[c3,c4] ~]!8 [[ds3,as3] ~]!8 [[g2,g3] ~]!8 [[f2,f3] ~]!8>"
+    $ n "<[~ [c3,c4]]!8 [~ [ds3,as3]]!8 [~ [g2,g3]]!8 [~ [f2,f3]]!8>"
     # bass
 
 
