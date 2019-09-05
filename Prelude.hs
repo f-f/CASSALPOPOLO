@@ -78,6 +78,8 @@ let syncmidi factor = do
 
 let sendmidi pat = p "volcanotes" $ pat # s "volca" # midichan 0
 
+let transmidi trans pat = trans "volcanotes" $ pat # s "volca" # midichan 0
+
 let stopmidi = p "volcanotes" $ silence
 
 -- | Stop the Launchpad channels and the midi
