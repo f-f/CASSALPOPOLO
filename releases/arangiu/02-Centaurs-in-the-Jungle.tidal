@@ -1,4 +1,4 @@
-:script ../Prelude.hs
+:script ../../Prelude.hs
 
 do
   syncmidi 1
@@ -14,22 +14,22 @@ ciak
 do
   resetCycles
   lpd 7
-    $ loopAt 436
-    $ chop (436*4)
-    $ s "jojos"
+    $ loopAt 216
+    $ chop (216*4)
+    $ s "jojo216"
     # delaytime 0.333
   lp 0
     $ s "909!2"
   -- 485, eventually Maj7
   sendmidi
-    $ n "e3!4"
+    $ slow 8 $ n "[e3]!8 [c4]!8 [d4]!8 [a3]!8"
 
 stopmidi
 
+transmidi interpolate $ n "e3!4"
 
 transmidi interpolate $ slow 8 $ n "[e3]!8 [c4]!8 [d4]!8 [a3]!8"
 
-transmidi interpolate $ n "e3!4"
 
 
 lpd 2
@@ -40,10 +40,30 @@ lpd 2
   # pan "0.25 0.75"
   # delaytime 0.333
 
+
 lp 3
   $ loopAt 6
   $ chop 100
   $ s "jojo180"
+
+
+
+lp 5
+  $ loopAt 8 $ chop 8
+  $ n "e3 c4 d4 a3"
+  # bass
+  # crush 2
+
+
+
+lp 4
+  $ jux ((0.005 ~>))
+  $ loopAt 4
+  -- $ jux (rev) $ scramble 16
+  $ chop 16
+  -- $ fill2 (slow 2 $ s "[amen2:4] [[hh*2]!2 hh*4 hh*8]]" # speed 32)
+  $ s "<amen2:8 amen2:10>!2"
+  # speed 2
 
 
 lp 6
@@ -55,25 +75,6 @@ lp 6
   # crush 3
 
 
-
-do
-  lp 4
-    $ jux ((0.005 ~>))
-    $ loopAt 4
-    -- $ jux (rev) $ scramble 16
-    $ chop 16
-    -- $ fill2 (slow 2 $ s "[amen2:4] [[hh*2]!2 hh*4 hh*8]]" # speed 32)
-    $ s "<amen2:8 amen2:10>!2"
-    # speed 2
-  lp 5
-    $ loopAt 8 $ chop 8
-    $ n "e3 c4 d4 a3"
-    # bass
-    # crush 2
-
-
-
-
 lp 5
   $ loopAt 8 $ chop 16
   $ rarely (jux $ fmap (+ 7))
@@ -83,7 +84,7 @@ lp 5
   # pan (trigger 5 $ range 0 1 $ fast 9 sine)
 
 
-mortal "volcanotes" 8 8 $ silence
+mortal "volcanotes" 8 7 $ silence
 
 
 
