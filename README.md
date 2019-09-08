@@ -1,4 +1,4 @@
-![CASSALPOPOLO Logo](https://github.com/f-f/CASSALPOPOLO/raw/master/logo/CASSALPOPOLO.png)
+![CASSALPOPOLO Logo](https://github.com/f-f/CASSALPOPOLO/raw/master/art/CASSALPOPOLO.png)
 
 # CASSALPOPOLO
 
@@ -23,36 +23,23 @@ This repo contains all the code responsible for generating all the beats over at
 
 ### Releases:
 
-**Arangiu** (2019) - [Music](), [Code](releases/arangiu)
+**Arangiu** (2019) - [Music][Arangiu], [Code](releases/arangiu)
 
-[<img height="300" src="logo/arangiu.png">]()
+[<img height="300" src="art/arangiu.png">][Arangiu]
 
-## Setup
+### Reproducing this music
 
-Music is made from three components:
+See [here](./HACKING.md)
 
-1. [TidalCycles](https://tidalcycles.org/)
-2. Korg Minilogue XD
-3. Samples
+## License
 
-#### Setting up Tidal
+All source files (`.tidal`, `.hs`, `.py`, `.svg`, `.nix`, `.scd`) are released under GPLv3 according to the [LICENSE](./LICENSE) file.
 
-- Install Supercollider, SuperDirt and its samples following [Tidal's install](https://tidalcycles.org/index.php/Installation)
-- [Install stack](https://docs.haskellstack.org/en/stable/install_and_upgrade/)
-- [Setup `emacs` with this config](https://github.com/f-f/home/blob/8b40d0559216f2f85f6cb5c369ebdf13dc9555f9/.spacemacs#L473-L477)
-- Clone this repo
-- From this folder, start `emacs` to start the editor
-- Start Supercollider, load `init.scd` to get channels configured and a proper amount of orbits
-- Start Tidal from Emacs with `C-c C-s`
-- Launch `./launchpad.py`
+All other assets (`.png`, `.jpg`, `.xcf`) are released under <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>:
 
-#### Setting up the samples
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
 
-In this folder:
-```
-gsutil rsync -r gs://cassalpopolo samples
-```
-
+[Arangiu]: https://soundcloud.com/cassalpopolo/sets/arangiu
 [Algorave]: https://algorave.com/
 [CASSALPOPOLO]: https://soundcloud.com/cassalpopolo
 [instagram]: https://www.instagram.com/cassalpopolo
