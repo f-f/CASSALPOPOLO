@@ -1,0 +1,188 @@
+:script ../Prelude.hs
+
+syncmidi 1 >> setbpm 128
+
+-- sounds
+
+bass = s "superhammond" # voice 6 # delaytime 0.333 # crush 6
+
+pwm = s "superpwm" # crush 4 # voice 0.6 # lfo 0.9 # pitch1 2.4 # pan (fast 2 $ square)
+
+-- sequences
+
+majmin = "<[c5,c6'maj] [c5,c6'min]>"
+
+attid = "<[c3,c4,ds4,g4] [ds3,as4,ds4,g4] [g2,g3,as3,d4] [f2,f3,a3,c4]>"
+
+attidBass = "<[~ [c3,c4]]!8 [~ [ds3,as3]]!8 [~ [g2,g3]]!8 [~ [f2,f3]]!8>"
+
+centaursMidi = "[e3]!8 [c4]!8 [d4]!8 [a3]!8"
+
+centaursHarm = "{~ ~ ~ <[~ d6] [[c6 ~] d6]> ~}%4"
+
+-- runs
+
+kickAccel = (|>| s "909!2 909*2 909*4")
+
+zizek
+  = loopAt (3*128/180)
+  $ chop 32
+  $ fill2 (s "z180_1:0 ~ ~" # speed 3 # delaytime 0.666)
+  $ s "<z180_3:0 ~ z180_3:1 ~>"  # pan "<1 0 0 1>" # delaytime 0.333
+
+jojo = loopAt 216 $ chop (216*4) $ s "jojo216" # delaytime 0.333
+
+greyBass = n "<a5 [[~ c6 c6 ~] c6] f5 [[~ g5 g5 ~] g5] d5 [[~ e5 e5 ~] e5] f5 [~ [a4,a5] ~ [a4]]>"
+
+greyBass2
+  = fmap (+12)
+  $ fill2 (n "<c4(3,8) as3(5,8,4) ds4(3,8) f4>")
+  $ n "<c4(3,8) as3(5,8,4) f3(3,8) g3(7,8)>"
+
+grey
+  = jux (# pan (fast 1 $ sine))
+  $ loopAt (28*1.4)
+  $ chop 532
+  $ s "<grey128:5 ~ grey128:0>"
+
+grey2 =
+  jux (# pan (fast "3 5 7 11" $ sine))
+  $ loopAt (24*1.4)
+  $ chop 532
+  $ s "<grey128:6>"
+
+greyJung =
+  juxBy 0.5 (# pan (slow 7 $ range 0.25 0.75 $ sine))
+  $ loopAt 4
+  $ every' 8 3 (juxBy 0.5 $ rev)
+  $ chop 64
+  $ s "jung4:8"
+
+greyPad =
+  fill2 (n "<c4'min7 as3'maj7 ds4'maj7 f4'maj7>" # s "supersaw")
+  $ n "<c4'min as3'maj7 f3'maj7 g3'maj7>"
+  # s "supersaw"
+
+lp 4
+  $ jux ((0.005 ~>))
+  $ loopAt 4
+  -- $ jux (rev) $ scramble 16
+  $ chop 16
+  -- $ every 2 (scramble 16)
+  $ s "<amen2:8 amen2:10>!2"
+  # speed 2
+
+
+-- YO
+
+sendmidi $ slow 2 $ n "[c5,c6'min]"
+
+
+
+lp 0 $ "909 ~ [~ 909] ~"
+
+lp 0
+  $ s "909!4"
+
+
+lp 3 $ s "shake(3,8,3)"
+
+lp 1 $ s "[~ gretsch:4]!4"
+
+sendmidi $ n majmin
+
+
+lp 4 $ n "[~ [c3,c4]]!4" # bass
+
+lpd 6 $ zizek
+
+lp 1 $ s
+
+
+sendmidi $ slow 2 $ fmap (+ 24) $ n attid
+
+lp 0 $ every' 8 7 kickAccel $ s "909!4"
+
+lp 2 $ s "~ cp ~ cp"
+
+lp 4 $ slow 2 $ attidBass # bass
+
+
+
+lp 0 $
+
+
+lp 5 $ n "[~ [ds4,g5,ds5,g4]]!4" # pwm
+
+
+lp 7 $ every 8 7 (const $ s "[gretsch:17]!4") $ s "~"
+
+
+lp 1 $ s "[~ gretsch:18]!4" # pan rand
+
+
+lp 3 $ loopAt 6 $ chop 100 $ s "jojo180"
+
+lpd 6 $ jojo
+
+setbpm 180
+
+lp 5
+  $ every 3 (jux $ fmap (+ 5))
+  $ rarely (fmap (+ 2))
+  $ n centaursHarm
+  # s "supersquare"
+  # crush 3
+  # pan square
+
+sendmidi $ slow 8 $ n centaursMidi
+
+lp 5 $ loopAt 8 $ chop 8 $ n "e3 c4 d4 a3" # bass
+
+sh 5
+
+lpd 6 $ grey
+
+lp 7 $ degrade $ s "conga:2(5,8,3)"
+
+lp 1 $ s "[~ hh ~ ~]"
+
+stopmidi
+
+lp 0 $ slow 4 $ s "909*4"
+
+
+lpd 7
+ $ n "[~ a4'min ~ a4'min]"
+ # s "supermandolin"
+ # delaytime 0.333
+
+lp 2 $ s "~ ~ cp ~"
+
+
+sendmidi $ slow 2 $ greyBass
+
+
+
+
+
+
+
+-- Thanks for dancing! <3
+
+
+shhh
+
+
+
+
+
+
+
+lpd 5
+  $ rarely (fmap (+ 7))
+  $ superimpose (fmap (+ 12))
+  $ fast 2
+  $ n (arp "updown" "a4'min ~")
+  # s "supersquare"
+  # pan (slow 4 $ sine)
