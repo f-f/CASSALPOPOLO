@@ -1,0 +1,108 @@
+
+sendmidi $ slow 2 $ n "<[c5,c6'maj] [c5,c6'min]>"
+
+
+lp 0
+  $ s "909 ~ [~ 909] ~"
+
+lpd 3
+  $ s "shake(3,8,3)"
+  # delaytime 0.333
+
+lp 4
+  $ superimpose (|+ 12)
+  $ (0.5 ~>)
+  $ slow 2
+  $ s "{c3 ~ [c3 ~] c3 ~}%4"
+  # bass
+
+lp 4
+  $ n "[~ [c3,c4]]!4"
+  # bass
+
+sendmidi $ slow 2 $ fmap (+24) $ n attid
+
+
+
+
+lpd 6 $ zizek
+
+
+
+lp 1
+  $ s "[gretsch:4 gretsch:5 gretsch:16 ~]!4"
+
+
+
+lp 2
+  $ s "~ cp ~ cp"
+
+
+lp 5 $ n "[~ [ds4,g5,ds5,g4]]!4" # trans
+
+
+lp 4 $ slow 2 $ n attidBass # bass
+
+
+lp 0
+  $ every' 8 7 kickAccel
+  $ s "909!4"
+
+lp 1 $ s "[~ gretsch:18]!4" # pan rand
+
+lp 3 $ loopAt 6 $ chop 100 $ s "jojo180"
+
+
+setbpm 180
+
+
+lpd 6 $ jojo
+
+
+
+lp 5
+  $ every 3 (jux $ fmap (+ 5))
+  $ rarely (fmap (+ 2))
+  $ n centaursHarm
+  # s "supersquare"
+  # crush 3
+  # pan square
+
+sendmidi $ slow 8 $ n centaursMidi
+
+sh 1
+
+lp 7 $ s "conga:2(5,8,5)"
+
+
+lp 0 $ slow 4 $ s "909*4"
+
+lp 1 $ s "[~ hh ~ ~]"
+
+
+lpd 5
+  $ rarely (fmap (+ 7))
+  $ superimpose (fmap (+ 12))
+  $ fast 2
+  $ n (arp "updown" "a4'min ~")
+  # s "supersquare"
+  # pan (slow 4 $ sine)
+
+sendmidi $ slow 2 $ n greyBass
+
+lpd 6
+  $ n "[~ a4'min ~ a4'min]"
+  # s "supermandolin"
+  # delaytime 0.333
+
+lp 2 $ s "~ ~ cp ~"
+
+lpd 7 $ grey
+
+
+stopmidi
+
+
+lp 4
+  $ fast 4
+  $ n (arp "up" "<c5'min7>")
