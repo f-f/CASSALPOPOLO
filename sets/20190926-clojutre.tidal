@@ -96,7 +96,6 @@ lp 4 $ n "[~ [c3,c4]]!4" # bass
 
 lpd 6 $ zizek
 
-lp 1 $ s
 
 
 sendmidi $ slow 2 $ fmap (+ 24) $ n attid
@@ -109,13 +108,11 @@ lp 4 $ slow 2 $ attidBass # bass
 
 
 
-lp 0 $
-
 
 lp 5 $ n "[~ [ds4,g5,ds5,g4]]!4" # pwm
 
 
-lp 7 $ every 8 7 (const $ s "[gretsch:17]!4") $ s "~"
+-- lp 7 $ every 8 7 (const $ s "[gretsch:17]!4") $ s "~"
 
 
 lp 1 $ s "[~ gretsch:18]!4" # pan rand
@@ -163,6 +160,25 @@ lp 2 $ s "~ ~ cp ~"
 sendmidi $ slow 2 $ greyBass
 
 
+lpd 5
+  $ rarely (fmap (+ 7))
+  $ superimpose (fmap (+ 12))
+  $ fast 2
+  $ n (arp "updown" "a4'min ~")
+  # s "supersquare"
+  # pan (slow 4 $ sine)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -175,14 +191,3 @@ shhh
 
 
 
-
-
-
-
-lpd 5
-  $ rarely (fmap (+ 7))
-  $ superimpose (fmap (+ 12))
-  $ fast 2
-  $ n (arp "updown" "a4'min ~")
-  # s "supersquare"
-  # pan (slow 4 $ sine)
