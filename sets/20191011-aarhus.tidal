@@ -1,0 +1,80 @@
+:script ../Prelude.hs
+
+syncmidi 1 >> setbpm 128
+
+
+lp 0 $ s "909*4"
+
+lp 0 $ s "[909 909 909 909]"
+
+lp 0
+  $ every' 8 7 (|>| s "909!2 909*2 909*4")
+  $ s "[909 909 909 909]"
+
+lp 0 $ s "[]"
+
+lp 0 $ s "[909 ~ [~ 909] ~]"
+
+lp 2 $ s "[~ cp ~ <cp [cp*2]>]"
+
+
+lp 1 $ s "[~ hh]!4"
+
+lpd 6 $ s "shake(<11 <1 2 3 4> 9 15>,16,7)"
+
+lpd 7 $ s "conga:6(5,8,3)"
+
+
+lpd 5
+  $ fast 2
+  $ n (arp "updown" "<c4'maj7 f4'maj7> ~")
+
+
+
+lpd 5
+  $ superimpose (fmap (+ 24))
+  $ fast 2
+  $ n (arp "up" "~ c4'maj7")
+  # s "supersquare"
+  # pan (slow 4 $ sine)
+
+
+lp 3
+  $ s "[~ gretsch:20]!2"
+
+lp 4
+  $ euclid 5 8
+  $ n "[c3,c4]"
+  # bass
+
+bass = s "superhammond" # voice 6 # delaytime 0.333 # crush 6
+
+stopmidi
+
+sendmidi
+  $ slow 4
+  $ n "[c3 ~] [<e4 a4> ~ <g4 c5> ~]"
+  -- $ every' 4 3 (|>| n "[c3,c4]")
+  -- $ n "[c3,c4]!4"
+  -- $ n (arp "updown" "c3'maj")
+
+
+
+setbpm 175
+
+
+lp 0 $ s "909 ~ [~ 909] ~"
+
+
+lp 0
+  $ every' 4 0 (const $ s "909*2 ~ ~ ~")
+  $ every 4 (const $ s "[909 909 909 [909 909]]")
+  $ s "909 909? [~ 909] ~"
+
+lp 2 $ s "~ ~ ~ cp"
+
+lp 1
+  $ every 8 (const $ s "hh(9?,16)")
+  $ s "[~ hh ~ hh ~ hh hh hh]"
+
+lp 1 $ s "hh(<9 7 13>,16,7)"
