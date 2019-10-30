@@ -1,0 +1,65 @@
+:script ../Prelude.hs
+
+syncmidi 1
+
+setbpm 128
+
+lp 0 $ s "bd!2 bd*2 bd*4"
+
+lp 1 $ s "~ <cp shake> shake ~"
+
+lp 2 $ s "conga:6(5,16)"
+
+lp 3 $ n (run 5) # s "moog"
+
+chip = s "supersquare"
+
+
+
+lp 4
+  $ sometimes (+ 7)
+  $ superimpose (+ 24)
+  $ fast 2
+  $ n (arp "updown" "<c5'maj c6'sus4> ~")
+  # chip
+
+lp 6
+  $ degradeBy (slow 8 $ saw)
+  $ s "superhammond(11,16)"
+  # n (scale "major" (irand 7))
+
+sendmidi
+  $ degradeBy (slow 2 $ sine)
+  $ fast 4
+  $ n (scale "major" (irand 7))
+
+shhh
+
+lp 0 $ s "909!4"
+
+lp 3 $ s "shake(5,16)?"
+
+lp 1 $ s "~ cp ~ [~ [~ sd]]"
+
+lp 2 $ s "[~ hh?]*4"
+
+
+
+
+
+sendmidi $ n "c5(5,8,3)"
+
+stopmidi
+
+lp 0 $ s "909(3,8)"
+
+
+lpd 6 $ s "conga:7(5,8)"
+
+
+
+sendmidi
+  $ slow 4
+  $ n "[c5,g5,c6] [cs5,gs5,cs6] [e5,g5,b5] [d5,f5,a5]"
+
+stopmidi
