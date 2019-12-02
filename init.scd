@@ -40,3 +40,6 @@ MIDIClient.init;
 Server.default.record;
 
 Server.default.stopRecording;
+
+
+g =  ServerOptionsGui(s);
