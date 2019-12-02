@@ -63,3 +63,86 @@ sendmidi
   $ n "[c5,g5,c6] [cs5,gs5,cs6] [e5,g5,b5] [d5,f5,a5]"
 
 stopmidi
+
+
+
+
+
+
+
+
+
+
+
+
+setbpm bpm = setcps (bpm/60/4)
+
+setbpm 128
+
+
+lp 0
+  -- $ degradeBy (slow 3 $ sine)
+  $ sometimes (|+ n 7)
+  $ fast 4
+  $ n (arp "down" "~ <e6'maj7>")
+  # s "supersquare"
+
+
+lp 3 $ s "shake(5,16)?"
+
+
+
+lp 6 $ loopAt 6 $ chop 100 $ s "jojo180"
+
+shhh
+
+
+lp 0 $ s "909*4"
+
+lp 1 $ s "[~ hh]!4"
+
+lp 3 $ s "conga:6(<3 5>,8,3)"
+
+lp 2 $ s "[~ cp]!2"
+
+lpd 4
+  $ slow 4
+  $ n "[e2,e3] ~"
+  # s "superhammond"
+  # voice 6
+  # crush 3
+
+lpd 7
+  $ n "~ e6'maj7"
+  # s "supermandolin"
+  # delaytime 0.333
+  # pan (rand)
+
+
+
+
+
+
+
+
+
+
+
+_rearrangeWith1 :: Pattern Int -> Int -> Pattern a -> Pattern a
+_rearrangeWith1 ipat n pat = innerJoin $ (\i -> _fast nT $ pats !! i) <$> ipat
+  where
+    pats = map (\i -> zoom (fromIntegral i / nT, fromIntegral (i+1) / nT) pat) [0 .. (n-1)]
+    nT :: Time
+    nT = fromIntegral n
+
+scramble1 :: Pattern Int -> Pattern a -> Pattern a
+scramble1 = tParam _scramble1
+
+_scramble1 :: Int -> Pattern a -> Pattern a
+_scramble1 n = _rearrangeWith1 (_segment (fromIntegral n) $ irand n) n
+
+
+
+
+
+lp 0 $ scramble1 3 $ n "c4 e4 f5 ~" # s "superpiano"
