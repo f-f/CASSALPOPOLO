@@ -1,0 +1,116 @@
+:script ../Prelude.hs
+
+syncmidi 1 >> setbpm 128
+
+hush
+
+
+setbpm 40
+
+setbpm 180
+
+lp 0 $ s "909*4"
+
+lp 0 $ s "[909,hh] 909 909 909"
+
+lp 6 $ "hh ~ ~ ~"
+
+bass = s "superhammond" # voice 6 # delaytime 0.333 # crush 6
+
+
+lp 1 $ s "[~ hh]!4"
+
+lpd 6 $ s "shake(<11 <1 2 3 4> 9 15>,16,7)"
+
+lpd 6 $ s "shake(5,16,5)"
+
+lpd 3 $ slow 4 $ s "bottle(11,32,7)"
+
+
+lp 0 $ s "[909 ~ [~ 909] ~]"
+
+lpd 7 $ n "<1 4 2 4 8 2>(5,8,3)"
+  # s "conga"
+
+lp 4 $ silence
+
+
+sendmidi
+  $ slow 4
+  $ n "b4 g4 d5 a4"
+  -- $ n "[c3 ~] [<e4 a4> ~ <g4 c5> ~]"
+  -- $ every' 4 3 (|>| n "[c3,c4]")
+  -- $ n "[c3,c4]!4"
+  -- $ n (arp "updown" "c3'maj")
+
+stopmidi
+
+lp 0
+  $ every' 8 7 (|>| s "909!2 909*2 909*4")
+  $ s "[909 909 909 909]"
+
+
+lp 4
+  $ slow 4
+  $ n "[c3,c4] ~"
+  # bass
+
+lpd 5
+  $ fast 2
+  $ n (arp "updown" "<as4'maj7 f4'maj7> ~")
+  # s "supersaw"
+
+
+
+lpd 5
+  $ degradeBy (slow 4 $ sine)
+  $ superimpose (fmap (+ 36))
+  $ fast 1
+  $ n (arp "<down diverge>" "c3'maj7(3,8)")
+  # s "supersquare"
+  # pan (slow 4 $ sine)
+
+
+lp 3
+  $ s "[~ gretsch:20]!2"
+
+
+
+stopmidi
+
+
+
+
+setbpm 175
+  $ slow 4
+  $ n "[c3 ~] [<e4 a4> ~ <g4 c5> ~]"
+  -- $ every' 4 3 (|>| n "[c3,c4]")
+  -- $ n "[c3,c4]!4"
+  -- $ n (arp "updown" "c3'maj")
+
+lp 0 $ s "909 ~ [~ 909] ~"
+
+lp 5
+  $ n "[c3 ~] [<e4 a4> ~ <g4 c5> ~]"
+  -- $ every' 4 3 (|>| n "[c3,c4]")
+  -- $ n "[c3,c4]!4"
+  -- $ n (arp "updown" "c3'maj")
+
+
+
+
+
+lp 0
+  $ every' 4 0 (const $ s "909*2 ~ ~ ~")
+  $ every 4 (const $ s "[909 909 909 [909 909]]")
+  $ s "909 909? [~ 909] ~"
+
+lp 2
+  $ every 4 (const $ s "~ cp cp cp")
+  $ s "~ cp ~ ~ ~ ~ ~ ~ "
+
+lp 1
+  $ every 8 (const $ s "hh(15?,16)")
+  $ s "[~ hh ~ hh ~ hh hh hh]"
+
+lp 1 $ s "hh(<9 7 13>,16,7)"
