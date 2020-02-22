@@ -111,6 +111,14 @@ stopmini
 
 --- Water
 
+lpd 6
+  $ juxBy 0.5 (0.005 ~>)
+  $ loopAt 4
+  $ chop 100
+  $ s "rainsoft"
+  # pan (slow 4 $ sine)
+  # delaytime 0.5
+
 -- 133
 mini
   $ fast 4
@@ -122,33 +130,28 @@ neu
   $ fast 4
   $ n (arp "up" "<[~ c4'maj] [c5'maj c6]>")
 
-do
-  lp 6
-    $ n "{0(5,8)}%3"
-    # s "bottle"
-    # speed (range 0.75 1.25 (sine))
-    # pan (fast 3 $ square)
-
-lpd 6
-  $ juxBy 0.5 (0.005 ~>)
-  $ loopAt 4
-  $ chop 100
-  $ s "rainsoft"
-  # pan (slow 4 $ sine)
+{-
+lp 4
+  $ n "{0(5,8)}%3"
+  # s "bottle"
+  # speed (range 0.75 1.25 (sine))
+  # pan (fast 3 $ square)
 
 lpd 7
   $ s "air"
   # n "<0 1 2>"
   # pan (slow 2 $ square)
   # delaytime 0.333
+-}
 
 lpd 5
   $ every 2 (|>| s "~")
-  $ loopAt 2
+  -- $ loopAt 4
   $ chop 100
   $ s "kalimba"
-  # speed 1.08333
+  # speed (fmap (* 2) 1.07)
   # pan (slow 4 $ segment 8 $ rand)
+  # delaytime 0.333
 
 stopmini
 
@@ -156,7 +159,7 @@ stopneu
 
 ---- Fire
 
--- Change the neu lfo to square wave
+-- Change the neu lfo to square wave, back to earth pattern
 
 lp 0
   $ s "[bd ~ [~ bd] ~]!2"
@@ -167,7 +170,7 @@ lp 6
   $ jux (|+ 7)
   $ (|+ n "<0 0 3 5>")
   $ n "[0 ~ [~ 0] ~]"
-  # s "supersquare"
+  # s "supersquare"   -- the melody, also how about a bass?
   # crush 1
   # pan (fast 5 $ square)
 
@@ -221,18 +224,49 @@ lpd 6
 
 stopmini
 
+-- arpeggiator is "too sharp"
+
 
 
 ---- Ether
 
+-- 494
 mini
   $ slow 4
   $ n "<f5'maj [f5'maj,d6] ds5'maj [ds5'maj,c6]>"
 
 
-shhh
+lpd 4
+  $ sometimes (jux (|+ 7))
+  $ sometimes (|+ 12)
+  $ n "{~!8? <c7 f7> ~!9?}%4"
+  # s "supersquare"
+  # pan (rand)
+  # crush 2
+  # delaytime 0.333
 
-stopneu
+
+-- kalimba is too fast?
+-- ricordati di cliccare su "range"
+
+do
+  shhh
+  stopneu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
