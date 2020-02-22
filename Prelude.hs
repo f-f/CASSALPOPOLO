@@ -82,6 +82,18 @@ let transmidi trans pat = trans "volcanotes" $ pat # s "volca" # midichan 0
 
 let stopmidi = p "volcanotes" $ silence
 
+let mini = sendmidi
+
+let transmini = transmidi
+
+let stopmini = stopmidi
+
+let neu pat = p "neutronnotes" $ pat # s "volca" # midichan 1
+
+let transneu trans pat = trans "neutronnotes" $ pat # s "volca" # midichan 1
+
+let stopneu = p "neutronnotes" $ silence
+
 -- | Stop the Launchpad channels and the midi
 let sh idx = p idx $ silence
 
