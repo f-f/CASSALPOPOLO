@@ -1,0 +1,351 @@
+:script ../Prelude.hs
+
+syncmidi 1
+
+setbpm 90
+
+
+
+-- Whatever jam
+
+
+lp 0
+  $ "bd ~ [~ bd] ~"
+
+lp 1
+  $ "<gretsch:4 hh>*16"
+  # pan (sine)
+
+lp 2
+  $ "[~ cp]!2"
+
+
+-- Minilogue 480
+sendmidi
+  -- $ jux (|+ 4)
+  $ slow 6
+  $ n "[b3 b3(3,8,5)] [b3 b3(3,8,5)] [g3 g3(3,8,5)] [a3 a3(3,8,3)] [e3 e3(3,8,5)] [e3 e3(3,8,3)]"
+
+stopmidi
+
+lpd 7
+  $ degradeBy 0.33
+  $ jux (rev)
+  $ fast 4
+  $ n (arp "<up down updown updownpinkie>" "[b5'min,b6]")
+  # s "supersquare"
+  # crush (sine * 8)
+  # pan (rand)
+
+lp 3
+  $ every' 5 3 (|>| s "shake(7,16,3)")
+  $ n "~ 3!4 ~!5 4!4 ~!2"
+  # s "shake"
+  # pan (fast 3 $ square)
+
+lpd 4
+  $ n "<3 7 9>(<11 7 5>, 16, <5 4 0 1>)"
+  # s "conga"
+  # pan (fast 5 $ square)
+
+
+lp 5
+  $ slow 2
+  $ n "17"
+  # s "gretsch"
+  # speed (-1)
+  # cut 5
+
+do
+  killSample 5 5
+  sh 5
+
+stopmidi
+
+shh
+
+
+
+
+
+
+
+--- Earth
+
+-- 071
+mini
+  $ slow 2
+  -- $ n "<c6 c6 c6 f5>"
+  $ n "<c6 f5 g5 gs5>"
+
+
+lpd 4
+  $ sometimes (# speed (choose [0.333, 0.5, 0.25]))
+  $ sometimes (jux $ rev)
+  $ fast 2 -- FIRE
+  $ fast 2
+  $ s "conga(<3 5>,8,<3 5 7>)"
+  # n (choose [1,3,9])
+  # pan (fast 7 $ square)
+  # delaytime 0.333
+
+lpd 3
+  $ fast 4  -- FIRE
+  $ every 2 (|>| s "shake(5,8)") (s "shake!4")
+  # pan (choose [0.0, 1.0, 0.25, 0.75])
+  # delaytime 0.5
+  # speed "1.1 1.0 1.1 1.0"
+
+lp 0
+  $ s "bd!4"
+
+lp 1
+  $ s "[~ cp]!2"
+
+neu
+  $ (0.125 <~)
+  $ slow 4
+  $ n "<c4 c5>"
+
+stopmini
+
+--- Water
+
+-- 133
+mini
+  $ fast 4
+  $ every 2 (|- 24)
+  $ n (arp "downup" "c5'maj c6'maj")
+
+neu
+  $ every 4 (|+ 24)
+  $ fast 4
+  $ n (arp "up" "<[~ c4'maj] [c5'maj c6]>")
+
+do
+  lp 6
+    $ n "{0(5,8)}%3"
+    # s "bottle"
+    # speed (range 0.75 1.25 (sine))
+    # pan (fast 3 $ square)
+
+lpd 6
+  $ juxBy 0.5 (0.005 ~>)
+  $ loopAt 4
+  $ chop 100
+  $ s "rainsoft"
+  # pan (slow 4 $ sine)
+
+lpd 7
+  $ s "air"
+  # n "<0 1 2>"
+  # pan (slow 2 $ square)
+  # delaytime 0.333
+
+lpd 5
+  $ every 2 (|>| s "~")
+  $ loopAt 2
+  $ chop 100
+  $ s "kalimba"
+  # speed 1.08333
+  # pan (slow 4 $ segment 8 $ rand)
+
+stopmini
+
+stopneu
+
+---- Fire
+
+-- Change the neu lfo to square wave
+
+lp 0
+  $ s "[bd ~ [~ bd] ~]!2"
+
+lp 6
+  $ fast 2
+  $ jux (|+ (12))
+  $ jux (|+ 7)
+  $ (|+ n "<0 0 3 5>")
+  $ n "[0 ~ [~ 0] ~]"
+  # s "supersquare"
+  # crush 1
+  # pan (fast 5 $ square)
+
+lpd 1
+  $ s "[~ cp]!4"
+  # delaytime 0.25
+
+stopmini
+
+-- 117
+mini
+  $ n "[c5,f5,c6,f6,c7,f7]"
+
+lp 2
+  -- $ n "[~ 16 5 4]!4"
+  $ n "18(<5 3 6>,8,5)!2"
+  # s "gretsch"
+  # speed (range 1.1 1.2 rand)
+  # pan (slow 3 $ sine)
+  # hpq (range 0.25 0.5 $ slow 4 sine)
+
+-- Bring the conga
+-- Bring the shaker
+
+
+---- Air
+
+-- bring back the kalimba yo
+
+-- stessa melodia della kalimba
+neu
+  $ fast 2
+  $ n "g5 as5 c5 ds6"
+
+lpd 7
+  $ slow 4
+  $ s "air"
+  # pan (slow 2 $ square)
+  # delaytime 0.333
+
+lpd 6
+  $ slow 2 -- Ether
+  $ slow 8
+  $ scramble 2
+  $ striate' 16 (1/8)
+  $ n "<0 1>"
+  # s "panfl"
+  # speed (fmap (* 2) "<1.06 1.05>")
+  # pan (rand)
+  # delaytime 0.333
+
+stopmini
+
+
+
+---- Ether
+
+mini
+  $ slow 4
+  $ n "<f5'maj [f5'maj,d6] ds5'maj [ds5'maj,c6]>"
+
+
+shhh
+
+stopneu
+
+
+
+
+
+
+
+setbpm 40
+
+setbpm 180
+
+lp 0 $ s "909*4"
+
+lp 0 $ s "[909,hh] 909 909 909"
+
+lp 6 $ "hh ~ ~ ~"
+
+bass = s "superhammond" # voice 6 # delaytime 0.333 # crush 6
+
+
+lp 1 $ s "[~ hh]!4"
+
+lpd 6 $ s "shake(<11 <1 2 3 4> 9 15>,16,7)"
+
+lpd 6 $ s "shake(5,16,5)"
+
+lpd 3 $ slow 4 $ s "bottle(11,32,7)"
+
+
+lp 0 $ s "[909 ~ [~ 909] ~]"
+
+lpd 7 $ n "<1 4 2 4 8 2>(5,8,3)"
+  # s "conga"
+
+lp 4 $ silence
+
+
+sendmidi
+  $ slow 4
+  $ n "b4 g4 d5 a4"
+  -- $ n "[c3 ~] [<e4 a4> ~ <g4 c5> ~]"
+  -- $ every' 4 3 (|>| n "[c3,c4]")
+  -- $ n "[c3,c4]!4"
+  -- $ n (arp "updown" "c3'maj")
+
+stopmidi
+
+lp 0
+  $ every' 8 7 (|>| s "909!2 909*2 909*4")
+  $ s "[909 909 909 909]"
+
+
+lp 4
+  $ slow 4
+  $ n "[c3,c4] ~"
+  # bass
+
+lpd 5
+  $ fast 2
+  $ n (arp "updown" "<as4'maj7 f4'maj7> ~")
+  # s "supersaw"
+
+
+
+lpd 5
+  $ degradeBy (slow 4 $ sine)
+  $ superimpose (fmap (+ 36))
+  $ fast 1
+  $ n (arp "<down diverge>" "c3'maj7(3,8)")
+  # s "supersquare"
+  # pan (slow 4 $ sine)
+
+
+lp 3
+  $ s "[~ gretsch:20]!2"
+
+
+
+stopmidi
+
+
+
+
+setbpm 175
+  $ slow 4
+  $ n "[c3 ~] [<e4 a4> ~ <g4 c5> ~]"
+  -- $ every' 4 3 (|>| n "[c3,c4]")
+  -- $ n "[c3,c4]!4"
+  -- $ n (arp "updown" "c3'maj")
+
+lp 0 $ s "909 ~ [~ 909] ~"
+
+lp 5
+  $ n "[c3 ~] [<e4 a4> ~ <g4 c5> ~]"
+  -- $ every' 4 3 (|>| n "[c3,c4]")
+  -- $ n "[c3,c4]!4"
+  -- $ n (arp "updown" "c3'maj")
+
+
+
+
+
+lp 0
+  $ every' 4 0 (const $ s "909*2 ~ ~ ~")
+  $ every 4 (const $ s "[909 909 909 [909 909]]")
+  $ s "909 909? [~ 909] ~"
+
+lp 2
+  $ every 4 (const $ s "~ cp cp cp")
+  $ s "~ cp ~ ~ ~ ~ ~ ~ "
+
+lp 1
+  $ every 8 (const $ s "hh(15?,16)")
+  $ s "[~ hh ~ hh ~ hh hh hh]"
+
+lp 1 $ s "hh(<9 7 13>,16,7)"
