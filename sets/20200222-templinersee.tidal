@@ -17,7 +17,7 @@ let conga
       # delaytime 0.333
 
 let shaker
-      = every 2 (|>| s "shake(5,8)") (s "shake!4")
+      = every' 2 1 (|>| s "shake(5,8)") (s "shake!4")
       # pan (choose [0.0, 1.0, 0.25, 0.75])
       # delaytime 0.5
       # speed "1.1 1.0 1.1 1.0"
@@ -48,9 +48,19 @@ let drone
       $ n "<c4 c5>"
 
 
+let pwm = s "superpwm" # crush 3 # pan (rand)
+
+let melody = n "[[c4,g4] ~ [~ [c5,g5]] ~]"
+
+
 --- Earth
 
+-- Neu: SHAPE to SIN, drive three quarters
 neu $ drone
+
+
+lpd 3 $ shaker
+
 
 -- 071
 mini
@@ -59,8 +69,6 @@ mini
   $ n "<c6 f5 g5 gs5>"
 
 lpd 4 $ conga
-
-lpd 3 $ shaker
 
 lp 0 $ s "bd!4"
 
@@ -75,7 +83,10 @@ lpd 7
   # pan (slow 2 $ square)
   # delaytime 0.333
 
--- Neu: slowly increase FREQ and ATT1
+-- Neu: slowly increase FREQ and ATT1, then
+neu
+  $ slow 2
+  $ n "<e5 [f5 g5] [b5 c6] [d6@4 ds6@3 [f6 c5]]>"
 
 stopmini
 
@@ -90,21 +101,29 @@ lpd 6
   # pan (slow 4 $ sine)
   # delaytime 0.5
 
+do
+  stopneu
+  stopmini
 
-neu
-  $ every 4 (|+ 24)
-  $ fast 4
-  $ n (arp "up" "<[~ c4'maj] [c5'maj c6]>")
-
--- 133
+-- 495
 mini
-  $ fast 4
-  $ every 2 (|- 24)
-  $ n (arp "downup" "c5'maj c6'maj")
+  $ slow 4
+  $ n "[g5,e6] [c6,g6] [as5,ds6] [as5,f6]"
+
+
+-- A bunch of things:
+-- - LFO RATE to a bit more than half
+-- - LFO SHAPE to TRI
+-- - DRIVE to about half, some more LEVEL
+-- - ATT1 to a quarter
+-- - DELAYMIX down to a quarter or so
+neu
+  $ slow 6
+  $ n "[c4 ~ [~ c4] ~]!4 [gs3(5,8,5)] [as3(5,8,5)]"
+
 
 lpd 5 $ kalimba 1
 
--- Neu: less DELAYMIX, mode VOLUME, more NOISE
 
 lp 4
   $ n "{0(5,8)}%3"
@@ -123,48 +142,51 @@ neu $ drone
 
 lpd 4 $ fast 2 conga
 
-lp 0 $ s "[bd ~ [~ bd] ~]!2"
+lp 0
+  $ every' 4 3 (\_ -> s "[bd!2 bd*2 bd*4]!2")
+  $ s "[bd ~ [~ bd] ~]!2"
 
-lpd 3 $ fast 4 $ shaker
 
-let melody
-      = jux (|+| 7)
-      $ n "[0 ~ [~ 12] ~]"
-      # s "supersquare"
-      # crush 1
-      # pan (rand)
+lp 6 $ fast 2 $ melody # pwm
 
-lp 6 $ fast 2 melody
+
+-- Neu: ATT1 down, OSC2 SHAPE 4-5, more VOLUME
+neu
+  $ (|+ n "<0 0 2 2 4 4 4 4>")
+  $ n "<gs3 [[~ gs3] ~ [gs3 ~] ~]>"
+
 
 lp 6
   $ fast 2
-  $ (|+ n "<0 0 3 5>")
+  $ (|+ n "<0 12 3 5>")
   $ melody
-
-lp 5
-  $ (|+ n "<0 0 2 2 4 4 4 4>")
-  $ n "<gs3 [[~ gs3] ~ [gs3 ~] ~]>"
-  # bass
+  # pwm
 
 lpd 1
   $ s "[~ [cp,sd]]!4"
   # delaytime 0.25
 
--- 117
-mini
-  $ n "[c5,f5,c6,f6,c7,f7]"
-
 lp 2
-  $ n "18(<5 3 6>,8,5)!2"
+  $ n "[[19 5] [19 [5 4]] [5 19] [19 5]]!2"
   # s "gretsch"
-  # speed (range 1.1 1.2 rand)
-  # pan (slow 3 $ sine)
-  # hpq (range 0.25 0.5 $ slow 4 sine)
+
+lp 3
+  $ n "0!16"
+  # s "shake"
+  # pan (fast 8 $ square)
+
+-- 107
+mini
+  $ fast 2
+  $ n $ arp "up" "[~,c5,e5,g5,c6,e6,g6,c7]"
+  -- $ n $ arp "up" "<~ <[~,c5,e5,g5,c6,e6,g6,c7] [~,c5,e5,g5,c6,e6,g6,c7] [~,gs4,c5,ds5,gs5,c6,ds6,gs6] [~,as4,d5,f5,as5,d6,f6,as6]>>"
 
 
 ---- Air
 
--- Neu: click on RANGE for OSC1, OSCMIX all to the right
+lp 0 $ s "[bd ~ [~ bd] ~]!2"
+
+-- OSCMIX all to the right
 
 -- bring back the kalimba yo
 lpd 5
@@ -197,6 +219,11 @@ mini
   $ n "<f5'maj [f5'maj,d6] ds5'maj [ds5'maj,c6]>"
 
 
+neu
+  $ fast 2
+  $ n $ arp "up" "<c3 [~,c3,ds3,g3,c4,ds4,g4,c5]>"
+
+
 lpd 4
   $ sometimes (jux (|+ 7))
   $ sometimes (|+ 12)
@@ -206,6 +233,68 @@ lpd 4
   # crush 2
   # delaytime 0.333
 
-do
-  shhh
-  stopneu
+stopmini
+
+shhh
+
+stopneu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Archive
+
+--- Water
+
+neu
+  $ every 4 (|+ 24)
+  $ fast 4
+  $ n (arp "up" "<[~ c4'maj] [c5'maj c6]>")
+
+-- 133
+mini
+  $ fast 4
+  $ every 2 (|- 24)
+  $ n (arp "downup" "c5'maj c6'maj")
+
+mini
+  $ slow 2
+  $ (|+ n 0)
+  $ n (arp "thumbup" "[e5,g5,b5,d6,e6]")
+
+--- Fire
+
+-- 117
+mini
+  $ fast 1.333333
+  $ n $ arp "down" "[c5,f5,c6,f6,c7,f7,c6,f6,c7,f7,c8,f8]"
+
+lp 2
+  $ n "18(<5 3 6>,8,5)!2"
+  # s "gretsch"
+  # speed (range 1.1 1.2 rand)
+  # pan (slow 3 $ sine)
+  # hpq (range 0.25 0.5 $ slow 4 sine)
+
+lp 5
+  $ (|+ n "<0 0 2 2 4 4 4 4>")
+  $ n "<gs3 [[~ gs3] ~ [gs3 ~] ~]>"
+  # bass
